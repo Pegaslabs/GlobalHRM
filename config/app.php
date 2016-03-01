@@ -157,9 +157,11 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         /*
-         * Acacha AdminLTE template provider
+         * 3rd Provider
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+    	DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
+    	HieuLe\Active\ActiveServiceProvider::class,
     ],
 
     /*
@@ -207,10 +209,11 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
 
         /*
-         * Acacha AdminLTE template alias
+         * 3rd Aliases
          */
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
-
+    	'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+    	'Active' => HieuLe\Active\Facades\Active::class,
     ],
 
 ];
