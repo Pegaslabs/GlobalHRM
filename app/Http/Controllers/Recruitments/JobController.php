@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Recruitments;
 use App\Http\Controllers\Controller;
 use View, DB;
 
+use App\Models\Recruitments\Job;
+
+
 class JobController extends Controller
 {
 /**
@@ -25,8 +28,11 @@ class JobController extends Controller
 							 'tblEmploymentTypes.name AS emp_type_name',
 							 'tblEmploymentLevels.name AS emp_level_name'
 							)
-					->paginate(20);
-		return View::make ( 'recruitments.jobs.index' )->with ( 'jobs', $jobs );
+					->orderBy('closing_date','DESC')
+					->paginate(20);		
+					
+		return View::make ( 'recruitments.jobs.index' )
+			   ->with ( 'jobs', $jobs );
 	}
 	
 	/**
@@ -55,6 +61,32 @@ class JobController extends Controller
 	 */
 	public function show($id) {
 		
+		/*
+		 *  Get the job information
+		 */
+		$job = Job::find ( $id );
+		/*
+		 * Get corresponding information
+		 */
+		$status = $job->status;
+		
+		$title  = $job->title;
+		
+		$department = $job->department;
+		
+		$empType = $job->empType;
+		
+		$empLevel = $job->empLevel;
+		/*
+		 * Show the edit form and pass the Job
+		 */ 
+		return View::make ( 'recruitments.jobs.show' )
+						->with('title',  $title)
+						->with('status', $status)
+						->with('department', $department)
+						->with('empType', $empType)	
+						->with('empLevel', $empLevel)
+						->with('job', $job);
 	}
 	
 	/**

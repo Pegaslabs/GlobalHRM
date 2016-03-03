@@ -10,7 +10,8 @@
         "acacha/admin-lte-template-laravel": "^2.0",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
         "illuminate/html": "^5.0",
-        "hieu-le/active": "^3.1"
+        "hieu-le/active": "^3.1",
+        "zofe/rapyd": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

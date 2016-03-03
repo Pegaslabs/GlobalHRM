@@ -14,12 +14,14 @@ return [
 		'recruitments' => [ 
 				'jobs' => [ 
 						'content_title'   => 'Job Managment',
-						'content_title_description' => 'Manage all available jobs',
+						'content_title_description_list' => 'Manage All Available Jobs',
+						'content_title_description_show' => 'Job Detail Information',
 						'columns'=>[
 								'id' => 'Job ID',
 								'title_id' => 'Job title',
 								'no_pos'   => 'No. Position',
 								'short_description' => 'Brief Description',
+								'description' => 'Description',
 								'department_id' =>'Department',
 								'employment_type_id' =>'Emp. Type',
 								'experience_level_id'=>'Emp. Level',

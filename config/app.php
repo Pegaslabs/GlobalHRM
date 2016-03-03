@@ -162,6 +162,7 @@ return [
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
     	DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
     	HieuLe\Active\ActiveServiceProvider::class,
+    	Zofe\Rapyd\RapydServiceProvider::class,
     ],
 
     /*

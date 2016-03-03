@@ -50,4 +50,24 @@ class Job extends Model
 				'closing_date'
 		];
 	}
+	/*
+	 * Eloquent: Relationships
+	 */
+	
+	public function status()
+	{
+		return $this->belongsTo('App\Models\Recruitments\JobStatus', 'status_id', 'id');
+	}
+	public function title(){
+		return $this->belongsTo('App\Models\Recruitments\JobTitle',  'title_id', 'id');
+	}
+	public function department(){
+		return $this->belongsTo('App\Models\Organization\Department',  'department_id', 'id');
+	}
+	public function empType(){
+		return $this->belongsTo('App\Models\Recruitments\EmploymentType',  'employment_type_id', 'id');
+	}
+	public function empLevel(){
+		return $this->belongsTo('App\Models\Recruitments\EmploymentLevel',  'experience_level_id', 'id');
+	}
 }
