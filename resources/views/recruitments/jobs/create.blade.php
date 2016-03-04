@@ -1,14 +1,19 @@
-@extends ('layouts.master') @section ('title',
-trans('labels.recruitments.title')) @section('page-header')
-<h1>
-	{{ trans('labels.recruitments.title') }} <small>{{
-		trans('labels.recruitments.jobs.job_request_list') }}</small>
-</h1>
-@endsection @section('content')
+@extends ('layouts.app') 
+@section ('title', trans('labels.recruitments.jobs.page_title')) 
+
+@section('contentheader_title')
+	{{ trans('labels.recruitments.jobs.content_title') }} <small>
+@endsection 
+
+@section('contentheader_description')
+	{{ trans('labels.recruitments.jobs.content_title_description_create') }}</small>
+@endsection 
+
+@section('main-content')
 <div class="box box-success">
 	<div class="box-header with-border">
 		<h3 class="box-title">{{
-			trans('labels.recruitments.jobs.job_request_create') }}</h3>
+			 trans('labels.recruitments.jobs.content_title_description_create')  }}</h3>
 	</div>
 	<!-- /.box-header -->
 
@@ -20,77 +25,91 @@ trans('labels.recruitments.title')) @section('page-header')
 			</div>
 		</div>
 		
-		@include('common.errors')
+		@include('errors.msg')				
 		
 		{!! Form::open(array('url' => 'recruitments/jobs/','class'=>'form-horizontal')) !!}
 
-
 		<div class="form-group" id="field_job_title_id">
-			<label class="control-label col-sm-3" for="job_title">{{ trans('labels.recruitments.jobs.table.job_title') }}<font
+			<label class="control-label col-sm-3" for="title_id">{{ trans('labels.recruitments.jobs.columns.title_id') }}<font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
-				<select type="select-one" class="form-control" id="job_title"
-					name="job_title">					
-					@foreach ($jobTitles as $jobTitle)						
-      					<option value="{!! $jobTitle->job_title_id !!}">{!! $jobTitle->job_title_name !!}</option>											
+				<select type="select-one" class="form-control" id="title_id"
+					name="title_id">					
+					@foreach ($mstJobTitles as $jobTitle)						
+      					<option value="{!! $jobTitle->id !!}">{!! $jobTitle->name !!}</option>											
 					@endforeach					
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group" id="field_priority">
+			<label class="col-sm-3 control-label" for="priority">{{ trans('labels.recruitments.jobs.columns.priority') }} <font
+				class="text-red">*</font></label>
+			<div class="controls col-sm-6">
+				<select type="select-one" class="form-control" id="priority"
+					name="priority">					
+						<option value="SS">SS</option>	
+						<option value="SS">S</option>					
+						<option value="A" selected>A</option>	
+						<option value="B">B</option>	
+						<option value="C">C</option>	
+						<option value="D">D</option>										
 				</select>
 			</div>
 		</div>
 		
 				
 		<div class="form-group" id="field_No_Positions">
-			<label class="col-sm-3 control-label" for="job_no_positions">{{ trans('labels.recruitments.jobs.table.job_no_positions') }} <font
+			<label class="col-sm-3 control-label" for="no_pos">{{ trans('labels.recruitments.jobs.columns.no_pos') }} <font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
-				<input class="form-control" type="text" id="job_no_positions"
-					name="job_no_positions" value="{{ old('job_no_positions') }}">
+				<input class="form-control" type="text" id="no_pos"
+					name="no_pos" value="{{ old('no_pos') }}">
 			</div>
 		</div>
 		
 		<div class="form-group" id="field_shortDescription">
-			<label class="control-label col-sm-3" for="job_short_description">{{ trans('labels.recruitments.jobs.table.job_short_description') }}
+			<label class="control-label col-sm-3" for="short_description">{{ trans('labels.recruitments.jobs.columns.short_description') }}
 			<font class="text-red">*</font>
 			</label>
 			<div class="controls col-sm-6">
 				<textarea class="form-control" type="textarea" rows="4"
-					id="job_short_description" name="job_short_description" value="{{ old('job_short_description') }}"></textarea>
+					id="short_description" name="short_description" value="{{ old('short_description') }}"></textarea>
 			</div>			
 		</div>
 			
 		<div class="form-group" id="field_full_description">
-			<label class="control-label col-sm-3" for="job_full_description">{{ trans('labels.recruitments.jobs.table.job_full_description') }}<font
+			<label class="control-label col-sm-3" for="description">{{ trans('labels.recruitments.jobs.columns.description') }}<font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
 				<textarea class="form-control" type="textarea" rows="4"
-					id="job_full_description" name="job_full_description" value="{{ old('job_full_description') }}"></textarea>
+					id="description" name="description" value="{{ old('description') }}"></textarea>
 			</div>		
 					
 		</div>
-		
-		
+				
 		
 		<div class="form-group" id="field_deplartment_id">
-			<label class="control-label col-sm-3" for="request_department_id">{{ trans('labels.recruitments.jobs.table.request_department_id') }}<font
+			<label class="control-label col-sm-3" for="request_department_id">{{ trans('labels.recruitments.jobs.columns.department_id') }}<font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
-				<select type="select-one" class="form-control" id="request_department_id"
-					name="request_department_id">					
-					@foreach ($deptList as $dept)						
-      					<option value="{!! $dept->department_id !!}">{!! $dept->department_name !!}</option>											
+				<select type="select-one" class="form-control" id="department_id"
+					name="department_id">					
+					@foreach ($mstDepartments as $dept)						
+      					<option value="{!! $dept->id !!}">{!! $dept->name !!}</option>											
 					@endforeach					
 				</select>
 			</div>
 		</div>
 		
 		<div class="form-group" id="field_emp_type_id">
-			<label class="control-label col-sm-3" for="employment_type_id">{{ trans('labels.recruitments.jobs.table.employment_type_id') }}<font
+			<label class="control-label col-sm-3" for="employment_type_id">{{ trans('labels.recruitments.jobs.columns.employment_type_id') }}<font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
 				<select type="select-one" class="form-control" id="employment_type_id"
 					name="employment_type_id">					
-					@foreach ($empTypes as $empType)										
-						<option value="{!! $empType->employment_type_id !!}">{!! $empType->employment_type_name !!}</option>					
+					@foreach ($mstEmploymentTypes as $empType)										
+						<option value="{!! $empType->id !!}">{!! $empType->name !!}</option>					
 					@endforeach
 					
 				</select>
@@ -98,27 +117,13 @@ trans('labels.recruitments.title')) @section('page-header')
 		</div>
 		
 		<div class="form-group" id="field_emp_level_id">
-			<label class="control-label col-sm-3" for="employment_level_id">{{ trans('labels.recruitments.jobs.table.employment_level_id') }}<font
+			<label class="control-label col-sm-3" for="experience_level_id">{{ trans('labels.recruitments.jobs.columns.experience_level_id') }}<font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
-				<select type="select-one" class="form-control" id="employment_level_id"
-					name="employment_level_id">					
-					@foreach ($empLevels as $empLevel)										
-						<option value="{!! $empLevel->employment_level_id !!}">{!! $empLevel->employment_level_name !!}</option>					
-					@endforeach
-					
-				</select>
-			</div>
-		</div>
-		
-		<div class="form-group" id="field_education_level_id">
-			<label class="control-label col-sm-3" for="education_level_id">{{ trans('labels.recruitments.jobs.table.education_level_id') }}<font
-				class="text-red">*</font></label>
-			<div class="controls col-sm-6">
-				<select type="select-one" class="form-control" id="education_level_id"
-					name="education_level_id">					
-					@foreach ($educationLevels as $eduLevel)										
-						<option value="{!! $eduLevel->education_level_id !!}">{!! $eduLevel->education_level_name !!}</option>					
+				<select type="select-one" class="form-control" id="experience_level_id"
+					name="experience_level_id">					
+					@foreach ($mstEmploymentLevels as $empLevel)										
+						<option value="{!! $empLevel->id !!}">{!! $empLevel->name !!}</option>					
 					@endforeach
 					
 				</select>
@@ -127,13 +132,16 @@ trans('labels.recruitments.title')) @section('page-header')
 		
 		
 		<div class="form-group" id="field_emp_nationality">
-			<label class="control-label col-sm-3" for="employment_nationality">{{ trans('labels.recruitments.jobs.table.nationality_id') }}<font
+			<label class="control-label col-sm-3" for="nationality_id">{{ trans('labels.recruitments.jobs.columns.nationality_id') }}<font
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
-				<select type="select-one" class="form-control" id="employment_nationality"
-					name="employment_nationality">					
-					@foreach ($countries as $country)
-						<option value="{!! $country['country-code'] !!}">{!! $country['name'] !!}</option>
+				<select type="select-one" class="form-control" id="nationality_id" name="nationality_id">					
+					@foreach ($mstCountries as $country)
+						@if( $country->id  == 704)
+							<option value="{!! $country->id !!}" selected >{!! $country->name !!}</option>
+						@else
+							<option value="{!! $country->id !!}" >{!! $country->name !!}</option>
+						@endif
 					@endforeach
 				</select>
 			</div>
@@ -141,14 +149,14 @@ trans('labels.recruitments.title')) @section('page-header')
 				
 		
 		<div class="form-group" id="field_salaryMin">
-			<label class="col-sm-3 control-label" for="min_salary">{{ trans('labels.recruitments.jobs.table.min_salary') }}</label>
+			<label class="col-sm-3 control-label" for="min_salary">{{ trans('labels.recruitments.jobs.columns.min_salary') }}</label>
 			<div class="controls col-sm-6">
 				<input class="form-control" type="text" id="min_salary"
 					name="min_salary" value="{{ old('min_salary') }}" validation="none">
 			</div>
 		</div>
 		<div class="form-group" id="field_salaryMax">
-			<label class="col-sm-3 control-label" for="max_salary">{{ trans('labels.recruitments.jobs.table.max_salary') }}</label>
+			<label class="col-sm-3 control-label" for="max_salary">{{ trans('labels.recruitments.jobs.columns.max_salary') }}</label>
 			<div class="controls col-sm-6">
 				<input class="form-control" type="text" id="max_salary"
 					name="max_salary" value="{{ old('max_salary') }}" validation="none">
@@ -156,14 +164,13 @@ trans('labels.recruitments.title')) @section('page-header')
 		</div>
 		
 		
-		<div class="form-group" id="field_status">
-			<label class="control-label col-sm-3" for="status">{{trans('labels.recruitments.jobs.table.status')}}<font
-				class="text-red">*</font></label>
+		<div class="form-group" id="field_statusID">
+			<label class="control-label col-sm-3" for="status_id">{{trans('labels.recruitments.jobs.columns.status_id')}}
+			<font class="text-red">*</font></label>
 			<div class="controls col-sm-6">
-				<select type="select-one" class="form-control" id="status"
-					name="status">
-					@foreach ($status as $st)
-						<option value="{!! $st->status_id!!}">{!! $st->status_name !!}</option>
+				<select type="select-one" class="form-control" id="status_id" name="status_id">
+					@foreach ($mstStatus as $st)
+						<option value="{!! $st->id !!}">{!! $st->status_name !!}</option>
 					@endforeach
 					
 				</select>

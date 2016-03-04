@@ -17,8 +17,8 @@ class CreateJobsTable extends Migration {
 			$table->integer ( 'department_id' )->unsigned ()->comment ( 'Department which request to post this job' );
 			$table->integer ( 'employment_type_id' )->unsigned ()->comment ( 'Employment type' );
 			$table->integer ( 'experience_level_id' )->unsigned ()->comment ( 'Experience type' );
-			$table->integer ( 'job_function_id' )->unsigned ()->comment ( 'Job Function' );
-			$table->integer ( 'education_level_id' )->unsigned ()->comment ( 'Education level' );
+			$table->integer ( 'job_function_id' )->unsigned ()->nullable()->comment ( 'Job Function' );
+			$table->integer ( 'education_level_id' )->unsigned ()->nullable()->comment ( 'Education level' );
 			$table->integer ( 'nationality_id' )->unsigned ()->comment ( 'Nationality' );
 			$table->double  ( 'min_salary' )->unsigned ()->comment ( 'Min salary' );
 			$table->double  ( 'max_salary' )->unsigned ()->comment ( 'Max salary' );

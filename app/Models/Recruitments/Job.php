@@ -70,4 +70,7 @@ class Job extends Model
 	public function empLevel(){
 		return $this->belongsTo('App\Models\Recruitments\EmploymentLevel',  'experience_level_id', 'id');
 	}
+	public function nationality(){
+		return $this->belongsTo('App\Models\Organization\Country',  'nationality_id', 'country_code');
+	}
 }

@@ -4,6 +4,7 @@
 @section('contentheader_title')
 	{{ trans('labels.recruitments.jobs.content_title') }} <small>
 @endsection 
+
 @section('contentheader_description')
 	{{ trans('labels.recruitments.jobs.content_title_description_show') }}</small>
 @endsection 
@@ -11,8 +12,18 @@
 @section('main-content')
 <div class="box box-success">
 	<div class="box-header with-border">
-		<h3 class="box-title">{{
-			trans('labels.recruitments.jobs.content_title_description_show') }}</h3>
+		<h3 class="box-title">
+		     {!! 'JD.'.str_pad($job->id, 8 , "0", STR_PAD_LEFT); !!} - [{{ $title->code}}] - 
+			@if ($job->status_id == '1')
+				<span class="label label-success">{!! $status->status_name!!}</span>
+			@elseif ($job->status_id == '2')
+				<span class="label label-warning">{!! $status->status_name !!}</span>
+			@elseif ($job->status_id == '3')
+				<span class="label label-danger">{!! $status->status_name !!}</span>
+			@else
+				<span class="label label-primary"">{!! $status->status_name !!}</span>
+			@endif		     	
+		</h3>
 	</div>
 	<!-- /.box-header -->
 	<div class="box-body">
@@ -32,6 +43,16 @@
 				<input class="form-control" type="text" id="title" name="title" value="{{ $title->name}}" validation="none" readonly>
 			</div>
 		</div>
+		
+		<div class="form-group" id="field_priority">
+			<label class="col-sm-3 control-label" for="priority">{{ trans('labels.recruitments.jobs.columns.priority') }} <font
+				class="text-red">*</font></label>
+			<div class="controls col-sm-6">
+				<input class="form-control" type="text" id="priority" name="priority" value="{{ $job->priority}}" validation="none" readonly>
+				
+			</div>
+		</div>
+		
 		<div class="form-group" id="field_No_Positions">
 			<label class="col-sm-3 control-label" for="job_no_positions">{{ trans('labels.recruitments.jobs.columns.no_pos') }} <font
 				class="text-red">*</font></label>
@@ -118,24 +139,31 @@
 					<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>					
 				</div>
 			</div>			
+		</div>		
+		<div class="form-group" id="field_emp_nationality">
+			<label class="control-label col-sm-3" for="employment_nationality">{{ trans('labels.recruitments.jobs.columns.nationality_id') }}
+			<font class="text-red">*</font></label>
+			<div class="controls col-sm-6">
+				<input class="form-control" type="text" id="employment_nationality"
+					name="employment_nationality" value="{{ $nationality->name }}" validation="none" readonly>
+			</div>
 		</div>
 		
-		<div class="form-group" id="field_status">
-			<label class="control-label col-sm-3" for="status">{{trans('labels.recruitments.jobs.columns.status_id')}}<font
-				class="text-red">*</font></label>
-			<div class="controls col-sm-6">
-						
-			@if ($job->status_id == '1')
-					<span class="form-control label-success">{!! $status->status_name!!}</span>										
-			@elseif ($job->status_id == '2')
-					<span class="form-control label-warning">{!! $status->status_name !!}</span>
-			@elseif ($job->status_id == '3')
-					<span class="form-control label-danger">{!! $status->status_name !!}</span>
-			@else
-					<span class="form-control label-primary"">{!! $status->status_name !!}</span>
-			@endif
-						
-			</div>
+		<div class="form-group row">
+		    	<div class="control-label col-sm-3">
+		      		<a class="btn btn-primary pull-right" href="{{ URL::to('recruitments/jobs/' . $job->id . '/edit')}}"><i class="fa fa-edit"></i> Edit</a>
+		    	</div>
+		    	<div class="control-label col-sm-6">
+		    	{!! Form::open(array('url' => 'recruitments/jobs/' . $job->id, 'class' => 'pull-left', 'accept-charset'=>'UTF-8', 'style'=>'display:inline')) !!} 
+					{!! Form::hidden('_method', 'DELETE')!!}
+						<button class="btn btn-danger pull-left" type="button" data-toggle="modal" type='submit'
+							data-target="#confirmDelete" data-title="{{trans('labels.recruitments.jobs.messages.dlg_delete_confirm_title') }}" 
+							data-message="{{trans('labels.recruitments.jobs.messages.dlg_delete_confirm_msg') }}">
+        				<i class="glyphicon glyphicon-trash"></i> Delete
+   						</button>					
+					{!! Form::close() !!}
+					@include('dialogs.dlg_delete_confirm')		      	
+		    	</div>
 		</div>
 	</div>
 	</div>

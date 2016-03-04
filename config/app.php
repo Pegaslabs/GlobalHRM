@@ -147,7 +147,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+    	Illuminate\Html\HtmlServiceProvider::class,
+    		
         /*
          * Application Service Providers...
          */
@@ -163,6 +164,7 @@ return [
     	DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
     	HieuLe\Active\ActiveServiceProvider::class,
     	Zofe\Rapyd\RapydServiceProvider::class,
+    	Webpatser\Countries\CountriesServiceProvider::class,
     ],
 
     /*
@@ -212,9 +214,12 @@ return [
         /*
          * 3rd Aliases
          */
+    	'Html'      => Illuminate\Html\HtmlFacade::class,
+    	'Form'      => Illuminate\Html\FormFacade::class,
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
     	'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
     	'Active' => HieuLe\Active\Facades\Active::class,
+    	'Countries' => Webpatser\Countries\CountriesFacade::class,
     ],
 
 ];

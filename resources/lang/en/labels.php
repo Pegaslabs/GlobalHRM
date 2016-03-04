@@ -16,6 +16,13 @@ return [
 						'content_title'   => 'Job Managment',
 						'content_title_description_list' => 'Manage All Available Jobs',
 						'content_title_description_show' => 'Job Detail Information',
+						'content_title_description_edit' => 'Edit Job Detail Information',		
+						'content_title_description_create' => 'Create New Job Request',						
+						'messages'=>[
+								'dlg_delete_confirm_title' => 'Delete Job Confirm',
+								'dlg_delete_confirm_msg' => 'Are you sure you want to delete this job ?'
+								
+						],
 						'columns'=>[
 								'id' => 'Job ID',
 								'title_id' => 'Job title',
