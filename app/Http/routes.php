@@ -31,4 +31,10 @@ Route::group(['middleware' => ['web']], function () {
    		Route::resource('jobs', 'JobController');
    		Route::resource('candidates', 'CandidateController'); 		 
     });
+    Route::get('cv/{filename}', [
+    			'as' => 'getUploadedResume', 'uses' => 'CandidateController@getUploadedResumeFile']);
+    Route::get('images/{filename}', ['as' => 'getUploadedAvatar', function ($filename)
+    {
+    	return Image::make(sprintf(storage_path().'/app/avatar/%s', $filename))->response();
+    }]);
 });

@@ -7,6 +7,7 @@
 	{{ trans('labels.recruitments.candidates.content_title_description_list') }}</small>
 @endsection 
 @section('main-content')
+
 <div class="nav-tabs-custom">
 	<div class="tab-content">
 		<div class="tab-pane active" id="tab_1-1">
@@ -28,6 +29,23 @@
 
 					</div>
 				</div>
+				@if(Session::has('errors'))
+					<div class="alert alert-danger alert-dismissible">
+				         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+				                 {{ Session::get('errors') }}
+				    </div>
+				@endif
+				
+				@if(Session::has('success'))
+				
+				<div class="alert alert-success alert-dismissible">
+				         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+				                <h4><i class="icon fa fa-check"></i> Alert!</h4>
+				                {{ Session::get('success') }}
+				              </div>
+				@endif
+				
 				<!-- /.box-header -->
 				<div class="box-body no-padding">
 					<div class="table-responsive" style='overflow-x: visible'>

@@ -49,10 +49,16 @@ return [
 						'content_title_description_show'   => 'Candidate Detail Information',
 						'content_title_description_edit'   => 'Edit Candidate Information',
 						'content_title_description_create' => 'Create New Candidate',
+						'button_label_candidate_edit' => 'Edit Information',
+						'button_label_resume_view' =>'View Resume',
+						'button_label_job_apply' =>'Apply For a Job',
+						'button_label_interview_schedule' =>'Schedule an Interview',
 						
 						'messages'=>[
 								'dlg_delete_confirm_title' => 'Delete Candidate Confirm',
-								'dlg_delete_confirm_msg' => 'Are you sure you want to delete this candidate ?'
+								'dlg_delete_confirm_msg' => 'Are you sure you want to delete this candidate ?',
+								'000_RC_CANDIDATE_CREATE_SUCCESS'  => 'Create candidate successfully.',								
+								'001_RC_CANDIDATE_CREATE_FAILED'   => 'Failed to create new candidate',								
 						
 						],
 						'columns'=>[

@@ -165,7 +165,9 @@ return [
     	HieuLe\Active\ActiveServiceProvider::class,
     	Zofe\Rapyd\RapydServiceProvider::class,
     	Webpatser\Countries\CountriesServiceProvider::class,
-    	Intervention\Image\ImageServiceProvider::class
+    	Intervention\Image\ImageServiceProvider::class,
+    	Laracasts\Flash\FlashServiceProvider::class,
+    		
     ],
 
     /*
@@ -222,6 +224,7 @@ return [
     	'Active' => HieuLe\Active\Facades\Active::class,
     	'Countries' => Webpatser\Countries\CountriesFacade::class,
     	'Image' => Intervention\Image\Facades\Image::class,
+    	'Flash' => Laracasts\Flash\Flash::class,
     ],
 
 ];

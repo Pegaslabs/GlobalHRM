@@ -20,6 +20,7 @@ use Illuminate\Http\Response;
  */
 use DB, View, Validator, Redirect, Request;
 use Storage, File, Log, Image;
+use Session;
 
 class CandidateController extends Controller {
 	/**
@@ -32,6 +33,7 @@ class CandidateController extends Controller {
 					  ->join ( 'tblJobTitles', 'tblCandidates.resume_title_id', '=', 'tblJobTitles.id' )
 					  ->select ( 'tblCandidates.*', 'tblJobTitles.name as job_title_name' )
 					  ->paginate ( 10 );
+							  
 		return View::make ( 'recruitments.candidates.index' )
 				->with ( 'candidates', $candidates );
 	}
@@ -109,48 +111,46 @@ class CandidateController extends Controller {
 						$extension = $avatar_file->getClientOriginalExtension(); // getting image extension
 						$fileName = 'img_'.time().'.'.$extension;                // renameing image
 						
-						Storage::disk('local')->put($destinationPath.'/'.$fileName, File::get($avatar_file));
-						//$avatar_file->move(public_path().'/storage/app/'.$destinationPath, $fileName);         // uploading file to given path	
-						
-						
+						Storage::disk('local')->put($destinationPath.'/'.$fileName, File::get($avatar_file));						
 						$image = Image::make(sprintf(storage_path().'/app/avatar/%s', $fileName))->resize(90, 90)->save(); // Resize image
-						
 						
 						$AvatarEntry = new UploadFileEntry ();
 						$AvatarEntry->mime = $avatar_file->getClientMimeType ();
 						$AvatarEntry->category = 1;
 						$AvatarEntry->original_filename = $avatar_file->getClientOriginalName ();
-						$AvatarEntry->filename = $avatar_file->getFilename () . '.' . $extension;						
-						$AvatarEntry->save ();					
+						$AvatarEntry->filename = $fileName;						
+						$AvatarEntry->save ();		
+						$candidate->avatar_upload_id = $AvatarEntry->id;						
 					}
 					else {
 						// sending back with error message.
-						Session::flash('error', 'Uploaded file is not valid');
+						Session::flash('errors', trans('labels.recruitments.candidates.messages.001_RC_CANDIDATE_CREATE_FAILED'));
 						return Redirect::to('recruitments/candidates/create');
-					}
-									
+					}									
 				}
 			}
 			/*
 			 * Handle CV Upload
 			 */
-			$file = Request::file ( 'resume_file' );
-			$extension = $file->getClientOriginalExtension ();
-			Storage::disk ( 'local' )->put ( 'cv/'. $file->getFilename () . '.' . $extension, File::get ( $file ) );
-			
-			$ResumeEntry = new UploadFileEntry ();
-			$ResumeEntry->mime = $file->getClientMimeType ();
-			$ResumeEntry->category = 2;
-			$ResumeEntry->original_filename = $file->getClientOriginalName ();
-			$ResumeEntry->filename = $file->getFilename () . '.' . $extension;
-			
-			$ResumeEntry->save ();
+			if (Input::hasFile('resume_file')){
+				$cvfile = Request::file ( 'resume_file' );
+				$extension = $cvfile->getClientOriginalExtension ();
+				Storage::disk ( 'local' )->put ( 'cv/'. $cvfile->getFilename () . '.' . $extension, File::get ( $cvfile ) );
+				
+				$ResumeEntry = new UploadFileEntry ();
+				$ResumeEntry->mime = $cvfile->getClientMimeType ();
+				$ResumeEntry->category = 2;
+				$ResumeEntry->original_filename = $cvfile->getClientOriginalName ();
+				$ResumeEntry->filename = $cvfile->getFilename () . '.' . $extension;
+				
+				$ResumeEntry->save ();
+				$candidate->resume_upload_id = $ResumeEntry->id;			
+			}
 			/*
 			 *
 			 */
-			$candidate->resume_upload_id = $ResumeEntry->id;
-			$candidate->avatar_upload_id = $AvatarEntry->id;
 			$candidate->save ();
+			Session::flash('success', trans('labels.recruitments.candidates.messages.000_RC_CANDIDATE_CREATE_SUCCESS'));				
 			return Redirect::to ( 'recruitments/candidates' );
 		}
 	}
@@ -163,93 +163,27 @@ class CandidateController extends Controller {
 	 */
 	public function show($id) {
 		
+		$candidate = Candidate::find($id);
+		$cv_upload_id = $candidate->cv_upload_id;
+		$avatar_upload_id = $candidate->avatar_upload_id;
 		/*
-		 * Get master data to fill to selection box
+		 * CVFile reference
 		 */
-		$mstJobs = DB::select ( 'SELECT tblJobs.job_id, tblJobTitles.job_title_name
-    						   FROM tblJobs
-    						   LEFT JOIN tblJobTitles
-    			               ON tblJobs.job_title_id = tblJobTitles.job_title_id' );
+		$cvFile = null;
+		if (($cv_upload_id != 0) || (!is_null($cv_upload_id) )){
+			$cvFile = UploadFileEntry::find($cv_upload_id)->filename;
+		}
 		/*
-		 * Get master interview result datas
+		 * Avatar reference
 		 */
-		
-		$mstInterviewResults = InterviewResult::all();
-		
-		/*
-		 * get Candidate's details
-		 */
-		$candidateInfo = DB::table ( 'tblCandidates' )
-						->leftjoin ( 'tblResumeFiles', 'tblCandidates.resume_upload_id', '=', 'tblResumeFiles.id' )
-						->select ( 'tblCandidates.*', 'tblResumeFiles.filename' )->where ( 'candidate_id', '=', $id )->first ();
-		/*
-		 * Get Candidate's skills
-		 */
-		
-		$candidateSkills = DB::select ( 'SELECT tblSkills.*, tblCandidate_Skills.no_years FROM tblSkills
-    									JOIN tblCandidate_Skills
-    									ON tblSkills.skill_id = tblCandidate_Skills.skill_id
-    								    WHERE tblCandidate_Skills.candidate_id= :candidate_id', [ 'candidate_id' => $id ] );
-		/*
-		 * Get person's education history
-		 */
-		
-		$educationsHistory = DB::select ( 'SELECT tblEducationLevels.*,
-    										tblCandidate_Educations.institute, 
-    										tblCandidate_Educations.majority,
-    										tblCandidate_Educations.start_year,  
-    										tblCandidate_Educations.graduation_year
-    									FROM tblEducationLevels
-    									JOIN tblCandidate_Educations
-    									ON tblEducationLevels.education_level_id = tblCandidate_Educations.education_id
-    								    WHERE tblCandidate_Educations.candidate_id= :candidate_id
-    									ORDER BY tblCandidate_Educations.graduation_year DESC', [ 'candidate_id' => $id ] );
-		/*
-		 * Get list of applied jobs
-		 */
-		
-		$appliedPositions = DB::select ( 'SELECT 
-    										tblJobs.*,
-											tblCandidate_Jobs.id,
-											tblCandidate_Jobs.job_id,
-											tblCandidate_Jobs.candidate_id,
-    										tblCandidate_Jobs.notes,    
-											tblJobTitles.job_title_id,
-    										tblJobTitles.job_title_name
-    									FROM tblJobs
-    									JOIN tblCandidate_Jobs
-    									ON tblJobs.job_id = tblCandidate_Jobs.job_id
-    									JOIN tblJobTitles
-    									ON tblJobs.job_title_id = tblJobTitles.job_title_id
-    								    WHERE tblCandidate_Jobs.candidate_id= :candidate_id
-    									ORDER BY tblCandidate_Jobs.created_at ASC', ['candidate_id' => $id ] );
-		/*
-		 * Get list of scheduled interviews
-		 */
-		$scheduledInterviews = DB::select(' SELECT tblInterviewSchedules.*, tblTmp.job_id AS job_id, tblInterviewResults.result_name as result
-										    FROM tblInterviewSchedules										    
-										    INNER JOIN 
-												( SELECT *
-												  FROM
-													tblCandidate_Jobs
-												  WHERE
-													tblCandidate_Jobs.candidate_id = :candidate_id
-											    ) AS tblTmp
-										    ON 
-												tblInterviewSchedules.candidate_job_id = tblTmp.id
-											LEFT JOIN tblInterviewResults
-											ON
-												tblInterviewSchedules.result_id = tblInterviewResults.id'
-										   , ['candidate_id' => $id] );
-				
+		$avatarFile = null;
+		if (($avatar_upload_id != 0) || (!is_null($avatar_upload_id) )){
+			$avatarFile = UploadFileEntry::find($avatar_upload_id)->filename;
+		}
 		return View::make ( 'recruitments.candidates.show' )
-				->with ( 'jobs', $mstJobs )
-				->with ( 'mstInterviewResults', $mstInterviewResults)
-				->with ( 'candidateInfo', $candidateInfo )
-				->with ( 'educationsHistory', $educationsHistory )
-				->with ( 'appliedPositions', $appliedPositions )
-				->with ( 'candidateSkills', $candidateSkills )
-				->with ( 'scheduledInterviews', $scheduledInterviews);
+			   		 ->with ( 'candidate', $candidate )
+					 ->with ( 'cvFile', $cvFile)
+					 ->with ( 'avatarFile', $avatarFile);
 	}
 	
 	/**
