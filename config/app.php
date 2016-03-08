@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -165,6 +165,7 @@ return [
     	HieuLe\Active\ActiveServiceProvider::class,
     	Zofe\Rapyd\RapydServiceProvider::class,
     	Webpatser\Countries\CountriesServiceProvider::class,
+    	Intervention\Image\ImageServiceProvider::class
     ],
 
     /*
@@ -220,6 +221,7 @@ return [
     	'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
     	'Active' => HieuLe\Active\Facades\Active::class,
     	'Countries' => Webpatser\Countries\CountriesFacade::class,
+    	'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

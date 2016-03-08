@@ -43,6 +43,42 @@ return [
 								'actions'       => 'Action'
 						]
 				] ,
+				'candidates' =>[
+						'content_title'   => 'Candidate Managment',
+						'content_title_description_list'   => 'Manage Candidate Database',
+						'content_title_description_show'   => 'Candidate Detail Information',
+						'content_title_description_edit'   => 'Edit Candidate Information',
+						'content_title_description_create' => 'Create New Candidate',
+						
+						'messages'=>[
+								'dlg_delete_confirm_title' => 'Delete Candidate Confirm',
+								'dlg_delete_confirm_msg' => 'Are you sure you want to delete this candidate ?'
+						
+						],
+						'columns'=>[
+								'candidate_id' => 'Candidate ID',
+								'first_name'   => 'First Name',
+								'middle_name'  => 'Middle Name',
+								'last_name'    => 'Last Name',
+								'gender'       => 'Gender',
+								'gender_values' => [
+									'male' => 'Male',
+									'female' => 'Female',
+									'unspecified' => 'Unspecified'
+								],
+								'avatar_id'    => 'Avatar',
+								'email'        => 'Contact Email',
+								'address'	   => 'Current Address',
+								'mobile'       => 'Mobile.No',
+								'resume_title_id' => 'Resume Title',
+								'profile_summary' => 'Profile Summary',
+								'nationality_id'  => 'Nationality',
+								'resume_id'   => 'CV File',
+								'skills'       => 'Skill',
+								'education' => 'Education',
+								'actions'    => 'Actions'
+						]
+				],
 				
 		] 
 ];

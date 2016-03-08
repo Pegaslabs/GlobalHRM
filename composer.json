@@ -13,7 +13,8 @@
         "hieu-le/active": "^3.1",
         "zofe/rapyd": "^2.2",
         "caouecs/laravel4-lang": "^2.0",
-        "webpatser/laravel-countries": "^1.4"
+        "webpatser/laravel-countries": "^1.4",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
