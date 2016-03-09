@@ -30,7 +30,7 @@ class JobController extends Controller
 					->leftjoin('tblDepartments','tblJobs.department_id', '=', 'tblDepartments.id')	
 					->leftjoin('tblEmploymentTypes','tblJobs.employment_type_id', '=', 'tblEmploymentTypes.id')
 					->leftjoin('tblEmploymentLevels','tblJobs.experience_level_id', '=', 'tblEmploymentLevels.id')						
-					->select('tblJobs.*', 'tblJobStatus.status_name', 
+					->select('tblJobs.*', 'tblJobStatus.status_name', 'tblJobStatus.description AS display',
 							 'tblJobTitles.name AS title_name', 
 							 'tblDepartments.name AS department_name',
 							 'tblEmploymentTypes.name AS emp_type_name',

@@ -1,5 +1,6 @@
 <?php
 return [ 
+		'system_name' => "Seta Asia - HRM",
 		'sidebar' =>[
 			'recruitments' => 
 				[
@@ -64,7 +65,7 @@ return [
 							'row_job_interview_schedule_result' => 'Result',
 							'row_job_interview_schedule_interviewer' => 'Interviewer',
 							
-							'column_job_interview_result' => 'Final',
+							'column_job_status' => 'Status',
 						],
 						
 						'messages'=>[

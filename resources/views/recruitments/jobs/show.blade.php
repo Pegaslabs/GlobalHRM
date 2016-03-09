@@ -13,16 +13,9 @@
 <div class="box box-success">
 	<div class="box-header with-border">
 		<h3 class="box-title">
-		     {!! 'JD.'.str_pad($job->id, 8 , "0", STR_PAD_LEFT); !!} - [{{ $title->code}}] - 
-			@if ($job->status_id == '1')
-				<span class="label label-success">{!! $status->status_name!!}</span>
-			@elseif ($job->status_id == '2')
-				<span class="label label-warning">{!! $status->status_name !!}</span>
-			@elseif ($job->status_id == '3')
-				<span class="label label-danger">{!! $status->status_name !!}</span>
-			@else
-				<span class="label label-primary"">{!! $status->status_name !!}</span>
-			@endif		     	
+		     {!! 'JD.'.str_pad($job->id, 8 , "0", STR_PAD_LEFT); !!} - [{{ $title->code}}] - 			
+			<span class="badge bg-{{$status->description}}">{{ $status->status_name }}</span>
+			 	
 		</h3>
 	</div>
 	<!-- /.box-header -->

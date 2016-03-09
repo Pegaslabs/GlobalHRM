@@ -61,15 +61,7 @@
 						<td>{!! $job->emp_type_name !!}</td>
 						<td>{!! $job->emp_level_name !!}</td>
 						<td>
-							@if ($job->status_id == '1')
-								<span class="label label-success">{!! $job->status_name!!}</span>
-							@elseif ($job->status_id == '2')
-								<span class="label label-warning">{!! $job->status_name !!}</span>
-							@elseif ($job->status_id == '3')
-								<span class="label label-danger">{!! $job->status_name !!}</span>
-							@else
-								<span class="label label-primary"">{!! $job->status_name !!}</span>
-							@endif
+							<span class="badge bg-{{$job->display}}">{{ $job->status_name }}</span>
 												
 						</td>
 						<td>{!! $job->closing_date !!}</td>

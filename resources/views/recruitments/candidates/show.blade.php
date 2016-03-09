@@ -129,7 +129,7 @@
 	                  <th style='width: 10%'>{{ trans('labels.recruitments.candidates.table_applicants_history.column_job_id') }}</th>
 	                  <th style='width: 25%'>{{ trans('labels.recruitments.candidates.table_applicants_history.column_job_title') }}</th>
 	                  <th style='width: 55%'>{{ trans('labels.recruitments.candidates.table_applicants_history.column_job_interview_schedule') }}</th>
-	                  <th style='width: 10%'>{{ trans('labels.recruitments.candidates.table_applicants_history.column_job_interview_result') }}</th>
+	                  <th style='width: 10%'>{{ trans('labels.recruitments.candidates.table_applicants_history.column_job_status') }}</th>
 	                </tr>
 	                @foreach($appliedJobs as $job)
 	                <tr>
@@ -161,7 +161,7 @@
 							</a>	
 						@endforeach							
 	                  </td>
-	                  <td><span class="badge bg-red">55%</span></td>
+	                  <td><span class="badge bg-{{$job->getJobInfo->status->description}}">{{$job->getJobInfo->status->status_name}}</span></td>
 	                </tr>	                	                
 	                @endforeach	                	                
 	              </tbody>

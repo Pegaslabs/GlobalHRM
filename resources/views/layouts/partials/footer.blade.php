@@ -2,8 +2,8 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        <a href="https://github.com/acacha/adminlte-laravel"></a><b>admin-lte-laravel</b></a>. A Laravel 5 package that switchs default Laravel scaffolding/boilerplate to AdminLTE template
+        <a href="http://www.seta-international.co.jp/"></a><b>Alright Reserve</b></a>. Human Resource Management System
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2015 <a href="http://acacha.org">Acacha.org</a>.</strong> Created by <a href="http://acacha.org/sergitur">Sergi Tur Badenas</a>. See code at <a href="https://github.com/acacha/adminlte-laravel">Github</a>
+    <strong>Copyright &copy; 2015 <a href="http://www.seta-international.co.jp/">Seta International Japan</a>.</strong> Created by <a href="https://beanfather.wordpress.com/">Pham Tien Thanh</a>. See code at <a href="https://github.com/thanhpolimi/GlobalHRM">Github</a>
 </footer>

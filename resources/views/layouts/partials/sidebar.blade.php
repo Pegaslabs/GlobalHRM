@@ -40,7 +40,7 @@
                 <ul class="treeview-menu {{ active_class(if_uri_pattern(['recruitments/*']), 'menu-open') }}">
                     <li class="{{ active_class(if_uri_pattern(['recruitments/jobs*']), 'active') }}"><a href="{!! route('recruitments.jobs.index') !!}"><i class='fa fa-reorder '></i>{{ trans('labels.sidebar.recruitments.sub_menu.jobs')}}</a></li>
                     <li><a href="{{ route('recruitments.candidates.index') }}"><i class='fa fa-group'></i>{{ trans('labels.sidebar.recruitments.sub_menu.candidates')}}</a></li>
-                    <li><a href="#"><i class='fa fa-link'></i>{{ trans('labels.sidebar.recruitments.sub_menu.settings')}}</a></li>
+                    <li><a href="#"><i class='fa fa-gears'></i>{{ trans('labels.sidebar.recruitments.sub_menu.settings')}}</a></li>
                 </ul>
             </li>
         </ul><!-- /.sidebar-menu -->
