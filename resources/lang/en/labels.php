@@ -53,6 +53,19 @@ return [
 						'button_label_resume_view' =>'View Resume',
 						'button_label_job_apply' =>'Apply For a Job',
 						'button_label_interview_schedule' =>'Schedule an Interview',
+						'table_header_personal_information' => 'Personal Information',
+						'table_applicants_history'   => [
+							'header' => 'Applicants History',
+							'column_job_id' => 'Job ID',
+							'column_job_title' => 'Job Title',
+							'column_job_interview_schedule' => 'Interview Schedule',
+							'row_job_interview_schedule_state' => 'State',
+							'row_job_interview_schedule_location' => 'Location',
+							'row_job_interview_schedule_result' => 'Result',
+							'row_job_interview_schedule_interviewer' => 'Interviewer',
+							
+							'column_job_interview_result' => 'Final',
+						],
 						
 						'messages'=>[
 								'dlg_delete_confirm_title' => 'Delete Candidate Confirm',
@@ -76,11 +89,12 @@ return [
 								'email'        => 'Contact Email',
 								'address'	   => 'Current Address',
 								'mobile'       => 'Mobile.No',
+								'education_id' => 'Education History',
 								'resume_title_id' => 'Resume Title',
 								'profile_summary' => 'Profile Summary',
 								'nationality_id'  => 'Nationality',
 								'resume_id'   => 'CV File',
-								'skills'       => 'Skill',
+								'skill_id'       => 'Skill',
 								'education' => 'Education',
 								'actions'    => 'Actions'
 						]

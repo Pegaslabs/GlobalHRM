@@ -30,4 +30,16 @@ class Candidate extends Model
 		$this->table = "tblCandidates";
 		$this->primaryKey ="id";
 	}
+	public function getEducationHistory()
+	{
+		return $this->hasMany('App\Models\Recruitments\Candidate_Educations', 'candidate_id', 'id');
+	}
+	public function getSkillList()
+	{
+		return $this->hasMany('App\Models\Recruitments\Candidate_Skills', 'candidate_id', 'id');
+	}
+	public function getJobList()
+	{
+		return $this->hasMany('App\Models\Recruitments\Candidate_Jobs', 'candidate_id', 'id');
+	}
 }

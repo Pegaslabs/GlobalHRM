@@ -56,21 +56,21 @@ class Job extends Model
 	
 	public function status()
 	{
-		return $this->belongsTo('App\Models\Recruitments\JobStatus', 'status_id', 'id');
+		return $this->hasOne('App\Models\Recruitments\JobStatus', 'id',  'status_id');
 	}
 	public function title(){
-		return $this->belongsTo('App\Models\Recruitments\JobTitle',  'title_id', 'id');
+		return $this->hasOne('App\Models\Recruitments\JobTitle', 'id', 'title_id');
 	}
 	public function department(){
-		return $this->belongsTo('App\Models\Organization\Department',  'department_id', 'id');
+		return $this->hasOne('App\Models\Organization\Department', 'id', 'department_id');
 	}
 	public function empType(){
-		return $this->belongsTo('App\Models\Recruitments\EmploymentType',  'employment_type_id', 'id');
+		return $this->hasOne('App\Models\Recruitments\EmploymentType', 'id',  'employment_type_id');
 	}
 	public function empLevel(){
-		return $this->belongsTo('App\Models\Recruitments\EmploymentLevel',  'experience_level_id', 'id');
+		return $this->hasOne('App\Models\Recruitments\EmploymentLevel', 'id', 'experience_level_id');
 	}
 	public function nationality(){
-		return $this->belongsTo('App\Models\Organization\Country',  'nationality_id', 'country_code');
+		return $this->hasOne('App\Models\Organization\Country', 'country_code',  'nationality_id');
 	}
 }

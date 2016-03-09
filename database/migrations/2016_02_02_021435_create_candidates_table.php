@@ -26,7 +26,7 @@ class CreateCandidatesTable extends Migration
             $table->integer('resume_title_id');
             $table->string('resume_headline',200);            
             $table->integer('resume_upload_id');  
-            $table->integer('avatar_upload_id');            
+            $table->integer('avatar_upload_id');           
             $table->string('profile_summary',1000);      
             $table->timestamps ();        
         });

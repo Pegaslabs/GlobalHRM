@@ -112,7 +112,7 @@ class CandidateController extends Controller {
 						$fileName = 'img_'.time().'.'.$extension;                // renameing image
 						
 						Storage::disk('local')->put($destinationPath.'/'.$fileName, File::get($avatar_file));						
-						$image = Image::make(sprintf(storage_path().'/app/avatar/%s', $fileName))->resize(90, 90)->save(); // Resize image
+						$image = Image::make(sprintf(storage_path().'/app/avatar/%s', $fileName))->resize(150, 150)->save(); // Resize image
 						
 						$AvatarEntry = new UploadFileEntry ();
 						$AvatarEntry->mime = $avatar_file->getClientMimeType ();
@@ -164,7 +164,9 @@ class CandidateController extends Controller {
 	public function show($id) {
 		
 		$candidate = Candidate::find($id);
+		
 		$cv_upload_id = $candidate->cv_upload_id;
+		
 		$avatar_upload_id = $candidate->avatar_upload_id;
 		/*
 		 * CVFile reference
@@ -180,10 +182,31 @@ class CandidateController extends Controller {
 		if (($avatar_upload_id != 0) || (!is_null($avatar_upload_id) )){
 			$avatarFile = UploadFileEntry::find($avatar_upload_id)->filename;
 		}
+		
+		/*
+		 * Get Education History
+		 */
+		$educationHistory = $candidate->getEducationHistory;
+		/*
+		 * Get Personal Skill List
+		 */
+		$skillList = $candidate->getSkillList;
+		
+		/*
+		 * Get list of applied Job
+		 */
+		$appliedJobs = $candidate->getJobList;
+		
+		/*
+		 * Display View
+		 */
 		return View::make ( 'recruitments.candidates.show' )
 			   		 ->with ( 'candidate', $candidate )
 					 ->with ( 'cvFile', $cvFile)
-					 ->with ( 'avatarFile', $avatarFile);
+					 ->with ( 'avatarFile', $avatarFile)
+					 ->with ( 'educationHistory', $educationHistory)
+					 ->with ( 'skillList' , $skillList)
+					 ->with ( 'appliedJobs',$appliedJobs);
 	}
 	
 	/**
