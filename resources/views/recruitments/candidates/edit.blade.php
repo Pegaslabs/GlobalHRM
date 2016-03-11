@@ -59,10 +59,22 @@
 				class="text-red">*</font></label>
 			<div class="controls col-sm-6">
 				<select type="select-one" class="form-control" id="gender"
-					name="gender">					
-      					<option value="Male">{{ trans('labels.recruitments.candidates.columns.gender_values.male') }}</option>	
-      					<option value="Female">{{ trans('labels.recruitments.candidates.columns.gender_values.female') }}</option>
-      					<option value="Unspecified">{{ trans('labels.recruitments.candidates.columns.gender_values.unspecified') }}</option>											      															      														      															
+					name="gender">
+						@if ($candidateInfo->gender == 'Male')
+      						<option value="Male" selected>{{ trans('labels.recruitments.candidates.columns.gender_values.male') }}</option>	
+      					@else
+      						<option value="Male">{{ trans('labels.recruitments.candidates.columns.gender_values.male') }}</option>	
+      					@endif
+      					@if ($candidateInfo->gender == 'Female')
+      						<option value="Female" selected>{{ trans('labels.recruitments.candidates.columns.gender_values.female') }}</option>
+      					@else
+      						<option value="Female">{{ trans('labels.recruitments.candidates.columns.gender_values.female') }}</option>
+      					@endif
+      					@if ($candidateInfo->gender == 'Unspecified')
+      						<option value="Unspecified" selected>{{ trans('labels.recruitments.candidates.columns.gender_values.unspecified') }}</option>
+      					@else
+      						<option value="Unspecified">{{ trans('labels.recruitments.candidates.columns.gender_values.unspecified') }}</option>
+      					@endif											      															      														      															
 				</select>
 			</div>
 		</div>
