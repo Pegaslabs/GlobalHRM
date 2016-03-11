@@ -56,7 +56,7 @@ return [
 						'button_label_interview_schedule' =>'Schedule an Interview',
 						'table_header_personal_information' => 'Personal Information',
 						'table_applicants_history'   => [
-							'header' => 'Applicants History',
+							'header' => 'Applicantion History',
 							'column_job_id' => 'Job ID',
 							'column_job_title' => 'Job Title',
 							'column_job_interview_schedule' => 'Interview Schedule',
@@ -100,6 +100,17 @@ return [
 								'actions'    => 'Actions'
 						]
 				],
+				'candidate_jobs' =>[
+						'messages' => [
+								'dlg_add_candidate_job_title' => 'Apply For A Job',
+								
+						],
+						'columns'=>[
+								'candidate_id' => 'Candidate Name',
+								'job_id'       => 'Job Title',
+								'notes'         => 'Notes'
+						]
+				]
 				
 		] 
 ];

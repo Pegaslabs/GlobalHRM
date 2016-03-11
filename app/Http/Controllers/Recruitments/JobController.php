@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Recruitments;
 
 use App\Http\Controllers\Controller;
-use View, DB, Validator, Input,Redirect;
+use View, DB, Validator, Input,Redirect, Response;
 
 use App\Models\Recruitments\Job;
 use App\Models\Recruitments\JobTitle;
@@ -14,7 +14,6 @@ use App\Models\Recruitments\JobStatus;
 
 use App\Models\Organization\Department;
 use App\Models\Organization\Country;
-
 
 class JobController extends Controller
 {
@@ -259,5 +258,23 @@ class JobController extends Controller
 		$job = Job::find ( $id );
 		$job->delete ();
 		return Redirect::to ( 'recruitments/jobs' );
+	}
+	/*
+	 * Tools
+	 */
+	public function getAvailableApplicants($candidate_id){
+		$availableJobs = DB::select("SELECT tblJobs.*, tblJobTitles.name as titleName
+									 FROM tblJobs 
+									 LEFT JOIN tblJobTitles
+									 ON tblJobs.title_id = tblJobTitles.id
+									 WHERE tblJobs.id NOT IN (
+										SELECT job_id FROM tblCandidate_Jobs 
+										WHERE
+											tblCandidate_Jobs.candidate_id=:candidate_id)", [ 'candidate_id' => $candidate_id ]);
+		if(!is_null($availableJobs))
+			$res = response()->json(['success'=>true,'data'=>json_encode($availableJobs)]);
+		else 
+			$res = response()->json(['success'=>false, 'data' => 'There is no available job for selection']);
+		return $res ;
 	}
 }

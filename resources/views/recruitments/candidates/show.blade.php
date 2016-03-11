@@ -42,7 +42,7 @@
 				<div class="row-fluid">
 					<div class="col-md-12">
 						<a
-							href="{!! route('recruitments.candidates.edit', $candidate->candidate_id)!!}"
+							href="{!! route('recruitments.candidates.edit', $candidate->id)!!}"
 							class="btn btn-small btn-warning"> <i class="fa fa-edit"></i>
 							{{trans('labels.recruitments.candidates.button_label_candidate_edit') }}
 						</a> &nbsp;&nbsp; 
@@ -60,10 +60,16 @@
 						</a> &nbsp;&nbsp;
 						@endif
 						
-						<button class="btn btn-small btn-success">
+						<button class="btn btn-small btn-success"
+							data-toggle="modal" data-target="#dlg_add_candidate_jobs" 
+							data-title="{{trans('labels.recruitments.candidate_jobs.messages.dlg_add_candidate_job_title') }}"
+							data-url  ="{{route('recruitments.candidates.applicants', ['candidate_id' => $candidate->id])}}"
+						>
 							<i class="fa fa-lock"></i>  {{trans('labels.recruitments.candidates.button_label_job_apply') }}
 						</button>												
 						&nbsp;&nbsp;
+						@include('dialogs.dlg_add_candidate_jobs')						
+						
 						<button class="btn btn-small btn-danger">
 							<i class="fa fa-bell"></i>  {{trans('labels.recruitments.candidates.button_label_interview_schedule') }}
 						</button>	
@@ -133,7 +139,7 @@
 	                </tr>
 	                @foreach($appliedJobs as $job)
 	                <tr>
-	                  <td>{!!'No.'.str_pad($job->id, 8 , "0", STR_PAD_LEFT);!!} </td>
+	                  <td>{!!'No.'.str_pad($job->job_id, 8 , "0", STR_PAD_LEFT);!!} </td>
 	                  <td>{{ $job->getJobInfo->title->name}}</td>
 	                  <td>
 	                    

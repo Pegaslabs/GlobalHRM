@@ -73,4 +73,13 @@ class Job extends Model
 	public function nationality(){
 		return $this->hasOne('App\Models\Organization\Country', 'country_code',  'nationality_id');
 	}
+	public function educationLevel()
+	{
+		return $this->hasOne('App\Models\Recruitments\EducationLevel', 'id', 'education_level_id');
+	}
+	public function jobFunction()
+	{
+		return $this->hasOne('App\Models\Recruitments\Skill', 'id', 'job_function_id');
+	}
+	
 }

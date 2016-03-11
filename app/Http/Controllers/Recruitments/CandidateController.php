@@ -8,6 +8,8 @@ namespace App\Http\Controllers\Recruitments;
 use App\Models\Recruitments\Candidate;
 use App\Models\Recruitments\JobTitle;
 use App\Models\Recruitments\Job;
+use App\Models\Recruitments\Candidate_Jobs;
+
 use App\Models\Organization\Country;
 
 
@@ -165,15 +167,15 @@ class CandidateController extends Controller {
 		
 		$candidate = Candidate::find($id);
 		
-		$cv_upload_id = $candidate->cv_upload_id;
+		$resume_upload_id = $candidate->resume_upload_id;
 		
 		$avatar_upload_id = $candidate->avatar_upload_id;
 		/*
 		 * CVFile reference
 		 */
 		$cvFile = null;
-		if (($cv_upload_id != 0) || (!is_null($cv_upload_id) )){
-			$cvFile = UploadFileEntry::find($cv_upload_id)->filename;
+		if (($resume_upload_id != 0) || (!is_null($resume_upload_id) )){
+			$cvFile = UploadFileEntry::find($resume_upload_id)->filename;
 		}
 		/*
 		 * Avatar reference
@@ -216,16 +218,53 @@ class CandidateController extends Controller {
 	 * @return Response
 	 */
 	public function edit($id) {
-		$candidateInfo = DB::table ( 'tblCandidates' )->leftjoin ( "tblResumeFiles", 'tblCandidates.resume_upload_id', '=', 'tblResumeFiles.id' )->select ( 'tblCandidates.*', 'tblResumeFiles.filename', 'tblResumeFiles.original_filename' )->where ( 'candidate_id', '=', $id )->first ();
+		/*
+		 * Get Candidate Information Detail
+		 */
+		$candidateInfo = Candidate::find($id);
+		
+		$resume_upload_id = $candidateInfo->resume_upload_id;
+		
+		$avatar_upload_id = $candidateInfo->avatar_upload_id;
+		/*
+		 * CVFile reference
+		 */
+		$cvFile = null;
+		if (($resume_upload_id != 0) || (!is_null($resume_upload_id) )){
+			$cvFile = UploadFileEntry::find($resume_upload_id)->filename;
+		}
+		/*
+		 * Avatar reference
+		 */
+		$avatarFile = null;
+		if (($avatar_upload_id != 0) || (!is_null($avatar_upload_id) )){
+			$avatarFile = UploadFileEntry::find($avatar_upload_id)->filename;
+		}
+		
 		/*
 		 * Nationality selection
 		 */
-		$countries = Countries::getList ( 'name' );
+		$mstCountries = Country::all();
 		/*
 		 *
 		 */
-		$jobTitles = JobTitle::all ();
-		return View::make ( 'recruitments.candidates.edit' )->with ( 'candidateInfo', $candidateInfo )->with ( 'jobTitles', $jobTitles )->with ( 'countries', $countries );
+		
+		/*
+		 * Job Title selection
+		 */
+		$mstJobTitles = JobTitle::all ();
+		
+		/*
+		 * Render view
+		 */
+		
+		return View::make ( 'recruitments.candidates.edit' )
+							->with ( 'avatarFile', $avatarFile)
+							->with ( 'cvFile', $cvFile)
+				            ->with ( 'candidateInfo', $candidateInfo )
+		                    ->with ( 'mstJobTitles', $mstJobTitles )
+		                    ->with ( 'mstCountries', $mstCountries )
+							->withInput(Input::except('password'));
 	}
 	
 	/**
@@ -239,7 +278,6 @@ class CandidateController extends Controller {
 				'first_name' => 'required|string|max:50',
 				'middle_name' => 'required|string|max:50',
 				'last_name' => 'required|string|max:50',
-				'gender' => 'required|integer|max:2',
 				'address' => 'string|max:500',
 				'nationality_id' => 'required|integer',
 				'resume_title_id' => 'required|integer',
@@ -252,6 +290,7 @@ class CandidateController extends Controller {
 		if ($validator->fails ()) {
 			return Redirect::to ( 'recruitments/candidates/create' )->withErrors ( $validator )->withInput ( Input::except ( 'password' ) );
 		} else {
+		
 			// store
 			$candidate = Candidate::find ( $id );
 			$candidate->first_name = Input::get ( 'first_name' );
@@ -264,39 +303,97 @@ class CandidateController extends Controller {
 			$candidate->profile_summary = Input::get ( 'profile_summary' );
 			$candidate->email = Input::get ( 'email' );
 			$candidate->mobile = Input::get ( 'mobile' );
+			
 			/*
 			 * handle file Upload
 			 */
-			$file = Request::file ( 'resume_file' );
-			
-			if (Input::hasFile('imaresume_filege')) {
-				/*
-				 * Upload file
-				 */
-				$extension = $file->getClientOriginalExtension ();
-				
-				Storage::disk ( 'local' )->put ( $file->getFilename () . '.' . $extension, File::get ( $file ) );
-				/*
-				 * Delete old uploaded file
-				 */
-				$entry = ResumeFileEntry::find ( $candidate->resume_upload_id );
-				if (is_null ( $entry )) {
-					$entry = new ResumeFileEntry ();
-				} else {
-					Storage::disk ( 'local' )->delete ( $entry->filename );
+			if (Input::hasFile('avatar_file')){				
+				$avatar_file = Request::file ( 'avatar_file' );
+				$avatar = array('image' => $avatar_file);
+				$rules = array('image' => 'mimes:jpeg,bmp,png');
+				$validator = Validator::make($avatar, $rules);
+				if ($validator->fails ()){
+					return Redirect::to ( 'recruitments/candidates/create' )->withErrors ( $validator )->withInput ( Input::except ( 'password' ) );
+				}else{					
+					if ($avatar_file ->isValid()) {
+						/*
+						 * Delete current avatar
+						 */
+						$avatar_delete_id = $candidate->avatar_upload_id;
+						$deleteAvatarFilename = null;
+						if (($avatar_delete_id != 0) || (!is_null($avatar_delete_id) )){
+							$deleteAvatarFileEntry = UploadFileEntry::find($avatar_delete_id);
+							$deleteAvatarFilename = $deleteAvatarFileEntry->filename;
+							if(Storage::disk('local')->exists('avatar/'.$deleteAvatarFilename)){
+								Storage::disk('local')->delete('avatar/'.$deleteAvatarFilename);
+								$deleteAvatarFileEntry->delete();
+							}
+						}
+						
+						/*
+						 * Upload new avatar
+						 */
+						$destinationPath = 'avatar';
+						$extension = $avatar_file->getClientOriginalExtension(); // getting image extension
+						$fileName = 'img_'.time().'.'.$extension;                // renameing image
+						
+						Storage::disk('local')->put($destinationPath.'/'.$fileName, File::get($avatar_file));						
+						$image = Image::make(sprintf(storage_path().'/app/avatar/%s', $fileName))->resize(150, 150)->save(); // Resize image
+						
+						$AvatarEntry = new UploadFileEntry ();
+						$AvatarEntry->mime = $avatar_file->getClientMimeType ();
+						$AvatarEntry->category = 1;
+						$AvatarEntry->original_filename = $avatar_file->getClientOriginalName ();
+						$AvatarEntry->filename = $fileName;						
+						$AvatarEntry->save ();		
+						$candidate->avatar_upload_id = $AvatarEntry->id;	
+						
+					}
+					else {
+						// sending back with error message.
+						Session::flash('errors', trans('labels.recruitments.candidates.messages.001_RC_CANDIDATE_CREATE_FAILED'));
+						return Redirect::to('recruitments/candidates/create');
+					}									
 				}
+			}
+			/*
+			 * Handle CV Upload
+			 */
+			if (Input::hasFile('resume_file')){
 				
 				/*
-				 * Update with new information
+				 * Delete current resume
 				 */
-				$entry->mime = $file->getClientMimeType ();
-				$entry->original_filename = $file->getClientOriginalName ();
-				$entry->filename = $file->getFilename () . '.' . $extension;
-				$entry->save ();
-				$candidate->resume_upload_id = $entry->id;
+				$resume_delete_id = $candidate->resume_upload_id;
+				$deleteCVFilename = null;
+				if (($resume_delete_id != 0) || (!is_null($resume_delete_id) )){
+					$deleteCVFileEntry = UploadFileEntry::find($resume_delete_id);
+					$deleteCVFilename  = $deleteCVFileEntry->filename;
+					if(Storage::disk('local')->exists('cv/'.$deleteCVFilename)){
+						Storage::disk('local')->delete('cv/'.$deleteCVFilename);
+						$deleteCVFileEntry->delete();
+					}
+				}
+				/*
+				 * Upload new resume
+				 */
+				
+				$cvfile = Request::file ( 'resume_file' );
+				$extension = $cvfile->getClientOriginalExtension ();
+				Storage::disk ( 'local' )->put ( 'cv/'. $cvfile->getFilename () . '.' . $extension, File::get ( $cvfile ) );
+				
+				$ResumeEntry = new UploadFileEntry ();
+				$ResumeEntry->mime = $cvfile->getClientMimeType ();
+				$ResumeEntry->category = 2;
+				$ResumeEntry->original_filename = $cvfile->getClientOriginalName ();
+				$ResumeEntry->filename = $cvfile->getFilename () . '.' . $extension;
+				
+				$ResumeEntry->save ();
+				$candidate->resume_upload_id = $ResumeEntry->id;			
 			}
 			
 			$candidate->save ();
+			
 			return Redirect::to ( 'recruitments/candidates' );
 		}
 	}
@@ -314,76 +411,53 @@ class CandidateController extends Controller {
 		return Redirect::to ( 'recruitments/candidates' );
 	}
 	/*
-	 * Get uploaded resume file
+	 * Get Uploaded resume file
 	 */
 	public function getUploadedResumeFile($filename) {
-		$entry = ResumeFileEntry::where ( 'filename', '=', $filename )->firstOrFail ();
-		$file = Storage::disk ( 'local' )->get ( $entry->filename );
-		
-		return (new Response ( $file, 200 ))->header ( 'Content-Type', $entry->mime );
+		$entry = UploadFileEntry::where ( 'filename', '=', $filename )->firstOrFail ();
+		if(Storage::disk('local')->exists('cv/'. $entry->filename)){		
+			$file = Storage::disk ( 'local' )->get ('cv/'. $entry->filename );		
+			return (new Response ( $file, 200 ))->header ( 'Content-Type', $entry->mime );
+		}
 	}
 	/*
-	 * Applied Job section handling
+	 * Applicantion Handler
 	 */
-	public function applyForAJob() {
-		$candidate_id = Input::get ( 'candidate_id' );
-		$job_id = Input::get ( 'job_id' );
-		$notes = Input::get ( 'applicants_note' );
+	public function createNewApplication() {
 		
+		$candidate_id = Request::get ( 'candidate_id' );
+		$job_id       = Request::get ( 'job_id' );
+		$notes        = Request::get ( 'applicants_note' );
 		
-		$applicant = DB::select ( "	SELECT * 
-    			    				FROM tblCandidate_Jobs
-    								WHERE 
-    									tblCandidate_Jobs.candidate_id=:candidate_id AND
-    									tblCandidate_Jobs.job_id =:job_id", [ 
-				'candidate_id' => $candidate_id,
-				'job_id' => $job_id 
-		] );
-		Log::info ( 'Save Start' );
-		if (count ( $applicant ) == 0) {
-			DB::statement ( "INSERT INTO tblCandidate_Jobs(candidate_id, job_id, notes) 
-											VALUES (:candidate_id, :job_id, :notes)", [ 
-					'candidate_id' => $candidate_id,
-					'job_id' => $job_id,
-					'notes' => $notes 
-			] );
-		} else {
-			DB::statement ( "UPDATE  tblCandidate_Jobs 
-							SET  notes = :notes
-							WHERE 
-								tblCandidate_Jobs.candidate_id=:candidate_id AND
-								tblCandidate_Jobs.job_id =:job_id", [ 
-					'candidate_id' => $candidate_id,
-					'job_id' => $job_id,
-					'notes' => $notes
-			] );
-		}
+		$appliedJob = new Candidate_Jobs;
+		$appliedJob->candidate_id = $candidate_id;
+		$appliedJob->job_id = $job_id;
+		$appliedJob->notes = $notes;
+		$appliedJob->save();
 		return Redirect::to ( 'recruitments/candidates/'.$candidate_id );
 	}
-
-	public function deleteAppliedJob($id) {
-		$rc = Candidate_Job::find ( $id );
+	
+	public function deleteApplication($id) {
+		$rc = Candidate_Jobs::find ( $id );
 		$candidate_id = $rc->candidate_id;
 		$rc->delete ();
 		return Redirect::to ( 'recruitments/candidates/'.$candidate_id );
 	}
 	
-	public function updateAppliedJob($id){		
+	public function updateApplication($id){		
+		
 		$job_id = Input::get ( 'selected_job_id' );
 		$notes = Input::get ( 'selected_applicants_note' );		
-		try {
-			$candidate_job = Candidate_Job::findOrFail ( $id );
-			$candidate_job->job_id = $job_id;			
-			$candidate_job->notes = $notes;	
-			$candidate_job->save();
-		}
-		catch (ModelNotFoundException $e) {
-			// Do nothing
-		}
+		
 		$candidate_job = Candidate_Job::findOrFail ( $id );
+		$candidate_job->job_id = $job_id;			
+		$candidate_job->notes = $notes;	
+		$candidate_job->save();
 		
 		return Redirect::to ( 'recruitments/candidates/'.$candidate_job->candidate_id );	
 	}
+	
+	
 	/*
 	 * Interview section handling
 	 */
@@ -424,24 +498,5 @@ class CandidateController extends Controller {
 		
 		return Redirect::to ( 'recruitments/candidates/'.$candidate_id );		
 	}
-	public function uploadAvatar(){
-		
-		$file = Request::file('avatar');
-		
-		$destinationPath = 'avatars/';
-		
-		$filename = $file->getClientOriginalName();
-		
-		$file->move($destinationPath, $filename);
-		
-		// save the file path on user avatar
-		
-		$user = User::where('id',$user->id)->first();
-		
-		$user->avatar = $destinationPath.$filename;
-		
-		$user->save();
-		
-		return response()->json(['success' => true, 'file' => asset($destinationPath.$filename) ]);
-	}
+	
 }
