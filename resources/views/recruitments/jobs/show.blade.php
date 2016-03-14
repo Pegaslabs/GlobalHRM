@@ -101,6 +101,16 @@
 			</div>
 		</div>
 		
+		<div class="form-group" id="field_emp_education_id">
+			<label class="control-label col-sm-3" for="employment_education_id">{{ trans('labels.recruitments.jobs.columns.education_level_id') }}
+			<font class="text-red">*</font></label>
+			<div class="controls col-sm-6">
+				<input class="form-control" type="text" id="employment_education_id"
+					name="employment_education_id" value="{{$educationLevel->name}}" readonly>				
+			</div>
+		</div>
+		
+		
 		<div class="form-group" id="field_salaryMin">
 			<label class="col-sm-3 control-label" for="min_salary">{{ trans('labels.recruitments.jobs.columns.min_salary') }}</label>
 			<div class="controls col-sm-6">

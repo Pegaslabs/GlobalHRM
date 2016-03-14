@@ -30,6 +30,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['prefix' => 'recruitments', 'namespace' => 'Recruitments', 'middleware' => ['auth']], function() {
    		Route::resource('jobs', 'JobController');
    		Route::resource('candidates', 'CandidateController'); 
+   		Route::resource('interviews', 'InterviewController');
     });
    /*
     * Tools
@@ -38,14 +39,24 @@ Route::group(['middleware' => ['web']], function () {
     	Route::get('cv/{filename}', [
     			'as' => 'getUploadedResume', 'uses' => 'CandidateController@getUploadedResumeFile']);
     	
-    	Route::get('applicants/{candidate_id}',[
-    			'as' => 'recruitments.candidates.applicants', 'uses'=> 'JobController@getAvailableApplicants']);
+    	Route::get('applicants/{candidate_id}/available',[
+    			'as' => 'recruitments.candidates.applications', 'uses'=> 'JobController@getAvailableApplications']);
     	
-    	Route::post('applicant', [
-    			'as' => 'recruitments.candidate.applicant.create', 'uses' => 'CandidateController@createNewApplication']);
+    	Route::get('applicants/{candidate_id}/applied',[
+    			'as' => 'recruitments.candidates.involve', 'uses'=> 'JobController@getInvolvedApplications']);
+    	
+    	
+    	Route::post('application', [
+    			'as' => 'recruitments.candidate.application.create', 'uses' => 'CandidateController@createNewApplication']);
 
     });
     
+    Route::group(['prefix' => 'recruitments', 'namespace' => 'Database', 'middleware' => ['auth']], function() {
+    	Route::get('master/skills/{term}',[
+    			'as' => 'recruitments.master.skills', 'uses'=> 'MasterController@getMasterSkills']);
+    	
+    	 
+    });
     Route::get('images/{filename}', ['as' => 'getUploadedAvatar', function ($filename)
     {
     	return Image::make(sprintf(storage_path().'/app/avatar/%s', $filename))->response();

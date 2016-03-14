@@ -10,6 +10,7 @@ use App\Models\Recruitments\JobTitle;
 use App\Models\Recruitments\EmploymentType;
 use App\Models\Recruitments\EmploymentLevel;
 use App\Models\Recruitments\JobStatus;
+use App\Models\Recruitments\EducationLevel;
 
 
 use App\Models\Organization\Department;
@@ -62,10 +63,13 @@ class JobController extends Controller
 		$mstEmploymentLevels = EmploymentLevel::all();
 		
 		$mstCountries = Country::all();
+		
+		$mstEducationLevel = EducationLevel::all();
 		/*
 		 * Show the edit form and pass the Job
 		 */
 		return View::make ( 'recruitments.jobs.create' )
+		->with('mstEducationLevels', $mstEducationLevel)
 		->with('mstJobTitles',  $mstJobTitles)
 		->with('mstStatus', $mstStatus)
 		->with('mstDepartments', $mstDepartments)
@@ -107,6 +111,9 @@ class JobController extends Controller
 			$job->department_id = Input::get ( 'department_id' );
 			$job->employment_type_id = Input::get ( 'employment_type_id' );
 			$job->experience_level_id = Input::get ( 'experience_level_id' );
+			$job->education_level_id = Input::get ( 'employment_education_id' );
+				
+			
 		
 			$job->nationality_id = Input::get ( 'nationality_id' );
 			$job->min_salary = Input::get ( 'min_salary' );
@@ -145,6 +152,8 @@ class JobController extends Controller
 		$empLevel = $job->empLevel;
 		
 		$nationality = $job->nationality;
+		
+		$educationLevel = $job->educationLevel;
 		/*
 		 * Show the edit form and pass the Job
 		 */ 
@@ -155,6 +164,7 @@ class JobController extends Controller
 						->with('empType', $empType)	
 						->with('empLevel', $empLevel)
 						->with('nationality', $nationality)
+						->with('educationLevel', $educationLevel)
 						->with('job', $job);
 	}
 	
@@ -185,6 +195,9 @@ class JobController extends Controller
 		$mstEmploymentLevels = EmploymentLevel::all();
 		
 		$mstCountries = Country::all();
+		
+		$mstEducationLevel = EducationLevel::all();
+		
 		/*
 		 * Show the edit form and pass the Job
 		 */ 
@@ -197,6 +210,7 @@ class JobController extends Controller
 						->with('mstEmploymentTypes', $mstEmploymentTypes)	
 						->with('mstEmploymentLevels', $mstEmploymentLevels)
 						->with('mstCountries', $mstCountries)
+						->with('mstEducationLevels', $mstEducationLevel)						
 						->with('job', $job);
 	}
 	
@@ -234,6 +248,7 @@ class JobController extends Controller
 			$job->department_id = Input::get ( 'department_id' );
 			$job->employment_type_id = Input::get ( 'employment_type_id' );
 			$job->experience_level_id = Input::get ( 'experience_level_id' );
+			$job->education_level_id  = Input::get ( 'employment_education_id' );
 				
 			$job->nationality_id = Input::get ( 'nationality_id' );
 			$job->min_salary = Input::get ( 'min_salary' );
@@ -262,7 +277,7 @@ class JobController extends Controller
 	/*
 	 * Tools
 	 */
-	public function getAvailableApplicants($candidate_id){
+	public function getAvailableApplications($candidate_id){
 		$availableJobs = DB::select("SELECT tblJobs.*, tblJobTitles.name as titleName
 									 FROM tblJobs 
 									 LEFT JOIN tblJobTitles
@@ -277,4 +292,20 @@ class JobController extends Controller
 			$res = response()->json(['success'=>false, 'data' => 'There is no available job for selection']);
 		return $res ;
 	}
+	public function getInvolvedApplications($candidate_id){
+		$availableJobs = DB::select("SELECT tblJobs.*, tblJobTitles.name as titleName
+									 FROM tblJobs
+									 LEFT JOIN tblJobTitles
+									 ON tblJobs.title_id = tblJobTitles.id
+									 WHERE tblJobs.id IN (
+										SELECT job_id FROM tblCandidate_Jobs
+										WHERE
+											tblCandidate_Jobs.candidate_id=:candidate_id)", [ 'candidate_id' => $candidate_id ]);
+		if(!is_null($availableJobs))
+			$res = response()->json(['success'=>true,'data'=>json_encode($availableJobs)]);
+			else
+				$res = response()->json(['success'=>false, 'data' => 'There is no available job for selection']);
+				return $res ;
+	}
+	
 }

@@ -95,9 +95,25 @@ return [
 								'profile_summary' => 'Profile Summary',
 								'nationality_id'  => 'Nationality',
 								'resume_id'   => 'CV File',
-								'skill_id'       => 'Skill',
+								'skill_id'       => 'Skills',
 								'education' => 'Education',
 								'actions'    => 'Actions'
+						]
+				],
+				'candidate_interviews' => [
+						'messages' => [
+								'dlg_add_candidate_interview_title' => 'Schedule An Interview',
+								
+						],
+						'columns'=>[
+								'candidate_job_id' => 'Applied Job',
+								'interview_state'  => 'Interview State',
+								'interviewer_id'   => 'Interviewer',
+								'scheduled_time'   => 'Interview Date Time',
+								'location'         => 'Interview Location',
+								'result_id'        => 'Interview Result',
+								'notes'            => 'Interview Note'
+								
 						]
 				],
 				'candidate_jobs' =>[

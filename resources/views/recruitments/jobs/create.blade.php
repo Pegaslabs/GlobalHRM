@@ -130,6 +130,19 @@
 			</div>
 		</div>
 		
+		<div class="form-group" id="field_emp_education_id">
+			<label class="control-label col-sm-3" for="employment_education_id">{{ trans('labels.recruitments.jobs.columns.education_level_id') }}<font
+				class="text-red">*</font></label>
+			<div class="controls col-sm-6">
+				<select type="select-one" class="form-control" id="employment_education_id"
+					name="employment_education_id">					
+					@foreach ($mstEducationLevels as $educationLevel)										
+						<option value="{!! $educationLevel->id !!}">{!! $educationLevel->name !!}</option>					
+					@endforeach					
+				</select>
+			</div>
+		</div>
+		
 		
 		<div class="form-group" id="field_emp_nationality">
 			<label class="control-label col-sm-3" for="nationality_id">{{ trans('labels.recruitments.jobs.columns.nationality_id') }}<font

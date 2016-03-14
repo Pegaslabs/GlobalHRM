@@ -21,7 +21,7 @@ use Illuminate\Http\Response;
  *
  */
 use DB, View, Validator, Redirect, Request;
-use Storage, File, Log, Image;
+use Storage, File, Image;
 use Session;
 
 class CandidateController extends Controller {
@@ -96,6 +96,10 @@ class CandidateController extends Controller {
 			$candidate->profile_summary = Input::get ( 'profile_summary' );
 			$candidate->email = Input::get ( 'email' );
 			$candidate->mobile = Input::get ( 'mobile' );
+			
+			$candidateSkills = Input::get ('candidate_skills');
+			var_dump($candidateSkills);
+			exit(1);
 			/*
 			 * Handle Avatar Upload
 			 * 
@@ -475,28 +479,5 @@ class CandidateController extends Controller {
 		return Redirect::to ( 'recruitments/candidates/'.$candidate_id );
 	}
 	
-	public function scheduleAnInterview() {
-		
-		$candidate_id       =   Input::get ( 'candidate_id' );
-		$applied_job_id     = 	Input::get ( 'applied_job_id' );
-		$interview_state    = 	Input::get ( 'interview_state' );
-		$interview_datetime =  	Input::get ( 'interview_datetime' );
-		$interview_location =  	Input::get ( 'interview_location' );
-		$interview_result   =   Input::get ( 'interview_result' );
-		$interview_note     = 	Input::get ( 'interview_note' );
-		
-		Log::info('$interview_datetime : '.$interview_datetime);
-				
-		$interview = new InterviewSchedule();
-		$interview->candidate_job_id = $applied_job_id;
-		$interview->interview_state = $interview_state;
-		$interview->scheduled_time = $interview_datetime;
-		$interview->location = $interview_location;
-		$interview->result_id = $interview_result;
-		$interview->note = $interview_note;
-		$interview->save();
-		
-		return Redirect::to ( 'recruitments/candidates/'.$candidate_id );		
-	}
 	
 }

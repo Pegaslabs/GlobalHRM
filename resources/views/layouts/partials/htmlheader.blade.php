@@ -20,7 +20,12 @@
     
     <!-- Date Picker -->
 	<link rel="stylesheet" href="{{ asset('/plugins/datepicker/datepicker3.css')}}">    
-		
+
+	<link rel="stylesheet" href="{{ asset ("/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css") }}">
+
+	<!-- Tags Editor -->
+	
+	<link rel="stylesheet" href='{{asset ("/bower_components/jquery-tag-editor/jquery.tag-editor.css")}}'>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

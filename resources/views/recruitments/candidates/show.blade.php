@@ -63,16 +63,23 @@
 						<button class="btn btn-small btn-success"
 							data-toggle="modal" data-target="#dlg_add_candidate_jobs" 
 							data-title="{{trans('labels.recruitments.candidate_jobs.messages.dlg_add_candidate_job_title') }}"
-							data-url  ="{{route('recruitments.candidates.applicants', ['candidate_id' => $candidate->id])}}"
+							data-url  ="{{route('recruitments.candidates.applications', ['candidate_id' => $candidate->id])}}"
 						>
 							<i class="fa fa-lock"></i>  {{trans('labels.recruitments.candidates.button_label_job_apply') }}
 						</button>												
 						&nbsp;&nbsp;
 						@include('dialogs.dlg_add_candidate_jobs')						
 						
-						<button class="btn btn-small btn-danger">
+						<button class="btn btn-small btn-danger"
+							 data-toggle="modal" data-target="#dlg_add_candidate_interviews" 
+							 data-title="{{trans('labels.recruitments.candidate_interviews.messages.dlg_add_candidate_interview_title') }}"
+							 data-url  ="{{route('recruitments.candidates.involve', ['candidate_id' => $candidate->id])}}"
+						>
 							<i class="fa fa-bell"></i>  {{trans('labels.recruitments.candidates.button_label_interview_schedule') }}
 						</button>	
+						
+						@include('dialogs.dlg_add_candidate_interviews')						
+						
 					</div>
 				</div>			
 			</div>
@@ -174,9 +181,9 @@
 	              </table>
 	            </div>
 	            <!-- /.box-body -->
-	            <div class="box-footer clearfix">
-	             
-	            </div>
+	            <div class="box-footer text-center">
+              			<a href="javascript::;" class="uppercase">View All History</a>
+            	</div>
 	          </div>
 	          
 	        </div>		

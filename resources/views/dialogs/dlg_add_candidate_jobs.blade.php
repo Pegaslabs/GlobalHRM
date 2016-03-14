@@ -1,4 +1,5 @@
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
 <script>
 $(document).ready(function(){
 	$('#dlg_add_candidate_jobs').on('show.bs.modal', function (e) {
@@ -56,11 +57,9 @@ $(document).ready(function(){
 	class='modal modal-primary fade' tabindex='-1' role="dialog"
 	aria-labelledby="dlg_add_candidate_jobs" aria-hidden="true"
 	data-width='760'>
-	{!! Form::open(array('route' =>
-	'recruitments.candidate.applicant.create', 'accept-charset'=>'UTF-8',
-	'name' =>'Frm_Add_Candidate_Jobs',
-	'class'=>'form-horizontal','style'=>'display:inline')) !!} {!!
-	Form::hidden('candidate_id', $candidate->id) !!}
+	{!! Form::open(array('route' => 'recruitments.candidate.application.create', 'accept-charset'=>'UTF-8',
+	'name' =>'Frm_Add_Candidate_Jobs', 'class'=>'form-horizontal','style'=>'display:inline')) !!} 
+	{!! Form::hidden('candidate_id', $candidate->id) !!}
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

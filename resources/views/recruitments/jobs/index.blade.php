@@ -28,10 +28,9 @@
 	</div>
 	<!-- /.box-header -->
 
-	<div class="box-body no-padding">
+	<div class="box-body">
 		
-		<div class="table-responsive" style = 'overflow-x:visible'>
-		
+		<div class="table-responsive" style = 'overflow-x:visible'>	
 			<table class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
@@ -61,8 +60,7 @@
 						<td>{!! $job->emp_type_name !!}</td>
 						<td>{!! $job->emp_level_name !!}</td>
 						<td>
-							<span class="badge bg-{{$job->display}}">{{ $job->status_name }}</span>
-												
+							<span class="badge bg-{{$job->display}}">{{ $job->status_name }}</span>												
 						</td>
 						<td>{!! $job->closing_date !!}</td>
 
@@ -87,11 +85,11 @@
 				</div>
 			</div>			
 		</div>	
+		<div class="col-sm-12">
+			<button onclick="window.location.href='{{ URL::to('recruitments/jobs/create') }}'; return false;" class="btn btn-small btn-primary">Add New <i class="fa fa-plus"></i></button>
+		</div>	
 	</div>
 	<!-- /.box-body -->	
-</div>
-<!--box-->
-<div class="col-xs-12">
-	<button onclick="window.location.href='{{ URL::to('recruitments/jobs/create') }}'; return false;" class="btn btn-small btn-primary">Add New <i class="fa fa-plus"></i></button>
+	<!--box-->	
 </div>
 @stop

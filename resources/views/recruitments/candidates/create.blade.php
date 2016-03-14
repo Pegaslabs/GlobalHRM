@@ -130,6 +130,16 @@
 				{!! Form::file('resume_file', ['class' => 'form-control']) !!}				
 			</div>
 		</div>
+
+		<div class="form-group" id="field_skill_id">
+			<label class="control-label col-sm-3" for="candidate_skills">{{ trans('labels.recruitments.candidates.columns.skill_id') }}
+			</label>
+			<div class="controls col-sm-6">
+				<textarea class="form-control" type="textarea" rows="4"
+					id="candidate_skills" name="candidate_skills" value="{{ old('candidate_skills') }}"></textarea>
+			</div>			
+		</div>
+		
 		<div class="form-group" id="field_profile_summary">
 			<label class="control-label col-sm-3" for="profile_summary">{{ trans('labels.recruitments.candidates.columns.profile_summary') }}
 			</label>
@@ -138,6 +148,8 @@
 					id="profile_summary" name="profile_summary" value="{{ old('profile_summary') }}"></textarea>
 			</div>			
 		</div>
+		
+		
 		<div class="control-group row">
 			<div class="controls col-sm-9">
 				<button class="saveBtn btn btn-primary pull-right">
@@ -152,4 +164,7 @@
 	<!-- /.box-body -->
 </div>
 <!--box-->
+
 @stop
+
+
