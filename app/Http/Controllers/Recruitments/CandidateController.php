@@ -9,11 +9,12 @@ use App\Models\Recruitments\Candidate;
 use App\Models\Recruitments\JobTitle;
 use App\Models\Recruitments\Job;
 use App\Models\Recruitments\Candidate_Jobs;
+use App\Models\Recruitments\InterviewResult;
+use App\Models\Common\UploadFileEntry;
 
 use App\Models\Organization\Country;
 
 
-use App\Models\Common\UploadFileEntry;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Response;
@@ -98,8 +99,10 @@ class CandidateController extends Controller {
 			$candidate->mobile = Input::get ( 'mobile' );
 			
 			$candidateSkills = Input::get ('candidate_skills');
-			var_dump($candidateSkills);
+			$arrCandidateSkills = explode(',', $candidateSkills);
+			var_dump($arrCandidateSkills);
 			exit(1);
+			
 			/*
 			 * Handle Avatar Upload
 			 * 
@@ -201,12 +204,27 @@ class CandidateController extends Controller {
 		/*
 		 * Get list of applied Job
 		 */
+		
 		$appliedJobs = $candidate->getJobList;
+		
+		
+		foreach ($appliedJobs as $appliedJob){
+			$interviewSchedules = $appliedJob->getInterviewList;
+			$interviewSchedules = $interviewSchedules->reject(function ($interviewSchedule) {
+				$now = new \DateTime("now");
+				$scheduled_time = new \DateTime($interviewSchedule->scheduled_time);
+				$dateDiff = $now->diff($scheduled_time);
+    			return ($dateDiff->invert !=1);
+			})->all();
+		}
+				
+		$mstInterviewResults = InterviewResult::all();
 		
 		/*
 		 * Display View
 		 */
 		return View::make ( 'recruitments.candidates.show' )
+					 ->with ('mstInterviewResults', $mstInterviewResults)
 			   		 ->with ( 'candidate', $candidate )
 					 ->with ( 'cvFile', $cvFile)
 					 ->with ( 'avatarFile', $avatarFile)
@@ -460,24 +478,5 @@ class CandidateController extends Controller {
 		
 		return Redirect::to ( 'recruitments/candidates/'.$candidate_job->candidate_id );	
 	}
-	
-	
-	/*
-	 * Interview section handling
-	 */
-	public function deleteScheduledInterview($id) {
-		$interview = InterviewSchedule::find ( $id );
-		/*
-		 * Get current candidate's id by job_candidate_id
-		 */
-		$candidateJob = Candidate_Job::find($interview->candidate_job_id);
-		$candidate_id = $candidateJob->candidate_id;
-		/*
-		 * Delete record
-		 */
-		$interview->delete ();
-		return Redirect::to ( 'recruitments/candidates/'.$candidate_id );
-	}
-	
 	
 }

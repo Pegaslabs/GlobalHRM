@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Database;
 
-use App\Models\Recruitments\Skill;
 use App\Http\Controllers\Controller;
+use App\Models\Recruitments\InterviewResult;
 use DB;
 
 class MasterController extends Controller
@@ -23,5 +23,14 @@ class MasterController extends Controller
     		else
     			$res = response()->json(['success'=>false, 'data' => 'Can not query master data from tblEducationLevels.']);
     	return $res ;
+	}
+	public function getMasterInterviewResults(){
+		$interviewResults = InterviewResult::all();
+		if(!is_null($interviewResults))
+			$res = response()->json(['success'=>true,'data'=>json_encode($interviewResults)]);
+			else
+				$res = response()->json(['success'=>false, 'data' => 'Can not query master data from tblInterviewResults.']);
+		return $res ;
+		
 	}
 }

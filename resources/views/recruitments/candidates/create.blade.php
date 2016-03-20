@@ -159,6 +159,7 @@
 			<div class="controls col-sm-3"></div>
 		</div>
 	</div>
+	{!! Form::hidden('api_mst_skills',  URL::to('recruitments/master/skills'), array('id' => 'api_mst_skills'))!!}
 
 	{!! Form::close() !!}
 	<!-- /.box-body -->

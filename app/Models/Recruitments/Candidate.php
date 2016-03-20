@@ -39,7 +39,7 @@ class Candidate extends Model
 		return $this->hasMany('App\Models\Recruitments\Candidate_Skills', 'candidate_id', 'id');
 	}
 	public function getJobList()
-	{
+	{		
 		return $this->hasMany('App\Models\Recruitments\Candidate_Jobs', 'candidate_id', 'id');
 	}
 }

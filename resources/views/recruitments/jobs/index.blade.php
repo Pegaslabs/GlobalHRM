@@ -11,7 +11,7 @@
 @section('main-content')
 <div class="box box-success">
 	<div class="box-header with-border">
-		<h3 class="box-title">{{ trans('labels.recruitments.jobs.content_title')}}</h3>
+		<h3 class="box-title">{{ trans('labels.recruitments.jobs.content_title_description_list')}}</h3>
 		<div class="box-tools">
 			<div class="input-group input-group-sm" style="width: 150px;">
 				<input type="text" name="table_search"

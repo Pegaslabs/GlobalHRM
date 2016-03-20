@@ -5,6 +5,11 @@ $(document).ready(function(){
 	$('#dlg_add_candidate_interviews').on('show.bs.modal', function (e) {
 	    $title = $(e.relatedTarget).attr('data-title');
 	    $url   = $(e.relatedTarget).attr('data-url');
+	    /*
+	    * Set redirect url
+	    */
+	    $redirect_url = $(e.relatedTarget).attr('data-redirect');
+		$('input[name="redirect_url"]').val($redirect_url);			
 	    
 	    $(this).find('.modal-title').text($title);	    
 
@@ -16,7 +21,7 @@ $(document).ready(function(){
                 console.log(result);
                 var retData = JSON.parse(result.data);
                 var success = result.success;
-            	var optAvailableJobs = document.getElementById("candidate_job_id");
+            	var optAvailableJobs = document.getElementById("applied_job_id");
             	/*
             	* Clear 
             	*/
@@ -38,6 +43,7 @@ $(document).ready(function(){
                 console.log('Error:', data);
             }
         });
+                
 	     // Pass form reference to modal for submission on yes/ok
 	    $form = $('form[name="Frm_Add_Interview"]');
 	    $(this).find('.modal-footer #confirmSave').data('form', $form);
@@ -46,7 +52,6 @@ $(document).ready(function(){
 	$('#dlg_add_candidate_interviews').find('.modal-footer #confirmSave').on('click', function(){	
 			var mydatetimepicker = $('#scheduled_date').datetimepicker();
 			$dtp = mydatetimepicker.data('DateTimePicker').date();
-			alert($dtp);
 			$interviewDate = new Date($dtp);
 			$interviewDate = $interviewDate.getFullYear() + '-' + ($interviewDate.getMonth() + 1) + '-' + $interviewDate.getDate() + ' ' +
 							 $interviewDate.getHours() + ':' + $interviewDate.getMinutes() + ':' +  $interviewDate.getSeconds();						
@@ -67,7 +72,9 @@ $(document).ready(function(){
 	aria-labelledby="dlg_add_candidate_interviews" aria-hidden="true"
 	data-width='760'>
 	{!! Form::open(array('route' => 'recruitments.interviews.store', 'accept-charset'=>'UTF-8', 'name' =>'Frm_Add_Interview', 'class'=>'form-horizontal','style'=>'display:inline')) !!} 
+	{!! Form::hidden('candidate_id', $candidate->id)!!}	
 	{!! Form::hidden('interview_datetime')!!}
+	{!! Form::hidden('redirect_url')!!}
 	
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -83,13 +90,13 @@ $(document).ready(function(){
 				<div class="row">
 
 					<div class="form-group" id="field_job_title_id">
-						<label class="control-label col-sm-3" for="candidate_job_id">{{
+						<label class="control-label col-sm-3" for="applied_job_id">{{
 							trans('labels.recruitments.candidate_interviews.columns.candidate_job_id') }}<font
 							class="text-red">*</font>
 						</label>
 						<div class="controls col-sm-6">
-							<select type="select-one" class="form-control" id="candidate_job_id"
-								name="candidate_job_id"> 							
+							<select type="select-one" class="form-control" id="applied_job_id"
+								name="applied_job_id"> 							
 							</select>
 						</div>
 					</div>
@@ -155,6 +162,20 @@ $(document).ready(function(){
 						</div>
 					</div>
 					
+					<div class="form-group" id="field_result_id">
+						<label class="control-label col-sm-3" for="result_id">{{
+							trans('labels.recruitments.candidate_interviews.columns.result_id') }}<font
+							class="text-red">*</font>
+						</label>
+						<div class="controls col-sm-6">							
+							<select type="select-one" class="form-control" id="result_id"
+								name="result_id"> 
+								@foreach($mstInterviewResults as $interviewResult)
+									<option value="{{$interviewResult->id}}">{{$interviewResult->name}}</option>									
+								@endforeach
+							</select>																	
+						</div>
+					</div>
 					
 								
 					<div class="form-group" id="field_note">

@@ -74,6 +74,7 @@
 							 data-toggle="modal" data-target="#dlg_add_candidate_interviews" 
 							 data-title="{{trans('labels.recruitments.candidate_interviews.messages.dlg_add_candidate_interview_title') }}"
 							 data-url  ="{{route('recruitments.candidates.involve', ['candidate_id' => $candidate->id])}}"
+							 data-redirect = "{{route('recruitments.candidates.show', ['candidate_id' => $candidate->id])}}"							 
 						>
 							<i class="fa fa-bell"></i>  {{trans('labels.recruitments.candidates.button_label_interview_schedule') }}
 						</button>	
@@ -152,6 +153,28 @@
 	                    
 						@foreach ($job->getInterviewList as $scheduledInterview)						
 							<a class="list-group-item ">
+								<h5 class="list-group-item-heading" style="font-weight: bold;">
+								{!! Form::open(array('route' => ['recruitments.interviews.destroy', $scheduledInterview->id], 'accept-charset'=>'UTF-8', 'name' =>'Frm_Delete_Interview',
+											'class'=>'form-horizontal','style'=>'display:inline')) !!} 
+								{!! Form::hidden('_method', 'DELETE')!!}																
+										<button id="btnDeleteInterview"
+											data-toggle="modal" data-target="#confirmDelete" 
+											data-title="{{trans('labels.recruitments.candidate_interviews.messages.dlg_delete_candidate_interview_title') }}"
+											data-message="{{trans('labels.recruitments.candidate_interviews.messages.dlg_delete_candidate_interview_msg') }}"	
+											type="button"
+											style="position: absolute; bottom: 5px; right: 5px; font-size: 13px;"
+											tooltip="Delete Interview">
+											<li class="fa fa-times"></li>
+										</button>									
+								{!!Form::close()!!}	
+								<button id="btnEditInterview"
+									type="button"
+									style="position: absolute; bottom: 5px; right: 35px; font-size: 13px;"
+									tooltip="Edit">
+									<li class="fa fa-edit"></li>
+								</button>
+								</h5>
+								
 								<p class="list-group-item-text">
 									<strong><i class="fa fa-check-circle margin-r-5"></i>{{ trans('labels.recruitments.candidates.table_applicants_history.row_job_interview_schedule_state') }} :</strong>									
 									{{$scheduledInterview->interview_state}}
@@ -182,7 +205,7 @@
 	            </div>
 	            <!-- /.box-body -->
 	            <div class="box-footer text-center">
-              			<a href="javascript::;" class="uppercase">View All History</a>
+              			<a href="{{route('recruitments.interviews.index')}}" class="uppercase">View All Interviews</a>
             	</div>
 	          </div>
 	          
@@ -199,4 +222,5 @@
 	<div id="ApplicationForm" class="reviewBlock" data-content="Form"
 		style="padding-left: 5px; display: none;"></div>
 </div>
+@include('dialogs.dlg_delete_confirm')
 @stop

@@ -38,6 +38,9 @@ class Candidate_Jobs extends Model
 	public function getJobInfo(){
 		return $this->hasOne('App\Models\Recruitments\Job','id','job_id');
 	}
+	public function getCandidateInfo(){
+		return $this->hasOne('App\Models\Recruitments\Candidate','id','candidate_id');
+	}
 	public function getInterviewList(){
 		return $this->hasMany('App\Models\Recruitments\InterviewSchedule','candidate_job_id','id');
 	}

@@ -2,12 +2,20 @@
 return [ 
 		'system_name' => "Seta Asia - HRM",
 		'sidebar' =>[
+			'dashboard' =>[
+					'main_menu'=>'Dashboard'
+			],	
+			'pim' =>[
+					'main_menu'=>'Personal Info Management',
+			],
 			'recruitments' => 
 				[
 					'main_menu'=>'Recruitments',
 					'sub_menu'=>[
-						'jobs' =>'Jobs Managemenet',
+						'jobs' =>'Jobs Managemenet',				
 						'candidates' => 'Candidates Management',
+						'interviews' => 'Interview Management',
+						'resumes'    => 'Resumes Management',
 						'settings'   => 'Settings'
 					]
 				]
@@ -56,7 +64,7 @@ return [
 						'button_label_interview_schedule' =>'Schedule an Interview',
 						'table_header_personal_information' => 'Personal Information',
 						'table_applicants_history'   => [
-							'header' => 'Applicantion History',
+							'header' => 'Comming Up Interviews',
 							'column_job_id' => 'Job ID',
 							'column_job_title' => 'Job Title',
 							'column_job_interview_schedule' => 'Interview Schedule',
@@ -101,8 +109,12 @@ return [
 						]
 				],
 				'candidate_interviews' => [
+						'content_title'   => 'Interviews Managment',
+						'content_title_description_list' => 'Manage All Scheduled Interviews',
 						'messages' => [
 								'dlg_add_candidate_interview_title' => 'Schedule An Interview',
+								'dlg_delete_candidate_interview_title' =>'Remove An Interview',
+								'dlg_delete_candidate_interview_msg' => 'Are you sure you want to remove this interview ?',
 								
 						],
 						'columns'=>[
