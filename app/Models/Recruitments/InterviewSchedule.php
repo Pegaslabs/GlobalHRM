@@ -42,4 +42,7 @@ class InterviewSchedule extends Model
 	public function getInterviewResult(){
 		return $this->hasOne('App\Models\Recruitments\InterviewResult','id','result_id');
 	}	
+	public function getCandidateJobInfo(){
+		return $this->hasOne('App\Models\Recruitments\Candidate_Jobs','id','candidate_job_id');
+	}
 }

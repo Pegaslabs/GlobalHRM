@@ -14,11 +14,12 @@
 		<h3 class="box-title">{{ trans('labels.recruitments.candidate_interviews.content_title_description_list')}}</h3>
 	</div>
 	<!-- /.box-header -->
-
-	<div class="box-body">
-		<div id="calendar" class="fc fc-ltr fc-unthemed"></div>  
+	<div id='wrap' class="box-body">
+		<div id="calendar"></div>  
+		<div style='clear:both'></div>
 	</div>
 	<!-- /.box-body -->	
 	<!--box-->	
 </div>
+@include('recruitments.interviews.show')
 @stop

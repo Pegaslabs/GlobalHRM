@@ -111,8 +111,11 @@ return [
 				'candidate_interviews' => [
 						'content_title'   => 'Interviews Managment',
 						'content_title_description_list' => 'Manage All Scheduled Interviews',
+						'content_title_description_show'   => 'Interview Detail Information',
+						
 						'messages' => [
 								'dlg_add_candidate_interview_title' => 'Schedule An Interview',
+								'dlg_edit_candidate_interview_title' => 'Edit Interview Information',							
 								'dlg_delete_candidate_interview_title' =>'Remove An Interview',
 								'dlg_delete_candidate_interview_msg' => 'Are you sure you want to remove this interview ?',
 								

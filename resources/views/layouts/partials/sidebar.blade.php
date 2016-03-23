@@ -33,18 +33,36 @@
         <ul class="sidebar-menu">
             <li class="header">Main Menu</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="{{ active_class(if_uri_pattern(['home']), 'active') }}"><a href="{!! URL::to('home') !!}"><i class='fa fa-dashboard'></i> <span>{{ trans('labels.sidebar.dashboard.main_menu')}}</span></a></li>
+            <li class="{{ active_class(if_uri_pattern(['home']), 'active') }}">
+            	<a href="{!! URL::to('home') !!}">
+            		<i class='fa fa-dashboard'></i> 
+            		  <span>{{ trans('labels.sidebar.dashboard.main_menu')}}</span>
+            	</a></li>
             <li><a href="#"><i class='fa fa-user'></i> <span>{{ trans('labels.sidebar.pim.main_menu')}}</span></a></li>
+            
             <li class="treeview {{ active_class(if_uri_pattern(['recruitments/*']), 'active') }}">
-                <a href="#"><i class='fa fa-briefcase'></i> <span>{{ trans('labels.sidebar.recruitments.main_menu')}}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#">
+                	<i class='fa fa-briefcase'></i> <span>{{ trans('labels.sidebar.recruitments.main_menu')}}</span> 
+                	<i class="fa fa-angle-left pull-right"></i>
+                </a>
                 <ul class="treeview-menu {{ active_class(if_uri_pattern(['recruitments/*']), 'menu-open') }}">
-                    <li class="{{ active_class(if_uri_pattern(['recruitments/jobs*']), 'active') }}"><a href="{!! route('recruitments.jobs.index') !!}"><i class='fa fa-reorder '></i>{{ trans('labels.sidebar.recruitments.sub_menu.jobs')}}</a></li>
-                    <li><a href="{{ route('recruitments.candidates.index') }}"><i class='fa fa-group'></i>{{ trans('labels.sidebar.recruitments.sub_menu.candidates')}}</a></li>
+                    <li class="{{ active_class(if_uri_pattern(['recruitments/jobs*']), 'active') }}">
+                    	<a href="{!! route('recruitments.jobs.index') !!}">
+                    		<i class='fa fa-reorder '></i>{{ trans('labels.sidebar.recruitments.sub_menu.jobs')}}
+                    	</a>
+                    </li>
+                    <li class="{{ active_class(if_uri_pattern(['recruitments/candidates*']), 'active') }}">
+                    	<a href="{{ route('recruitments.candidates.index') }}">
+                    		<i class='fa fa-group'></i>{{ trans('labels.sidebar.recruitments.sub_menu.candidates')}}
+                    	</a>
+                    </li>
                     
-                    <li><a href="{{route('recruitments.interviews.index')}}"><i class='fa fa-calendar'></i>{{ trans('labels.sidebar.recruitments.sub_menu.interviews')}}</a></li>
+                    <li  class="{{ active_class(if_uri_pattern(['recruitments/interviews*']), 'active') }}">
+                    	<a href="{{route('recruitments.interviews.index')}}">
+                    		<i class='fa fa-calendar'></i>{{ trans('labels.sidebar.recruitments.sub_menu.interviews')}}
+                    	</a>
+                    </li>
                     <li><a href="#"><i class='fa fa-file'></i>{{ trans('labels.sidebar.recruitments.sub_menu.resumes')}}</a></li>
-                    
-                    
                     <li><a href="#"><i class='fa fa-gears'></i>{{ trans('labels.sidebar.recruitments.sub_menu.settings')}}</a></li>
                     
                 </ul>

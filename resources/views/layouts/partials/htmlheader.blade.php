@@ -31,7 +31,9 @@
 	<link rel="stylesheet" href='{{ asset ("/common/x_full_calendar/fullcalendar.css") }}'>
 	<link rel="stylesheet" href='{{ asset ("/common/x_full_calendar/fullcalendar.print.css")}}' media='print' />
 	
-	
+	 <!-- Daterange picker -->
+  	<link rel="stylesheet" href="{{asset('/plugins/daterangepicker/daterangepicker-bs3.css')}}">
+  
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

@@ -10,30 +10,38 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('/js/app.min.js') }}" type="text/javascript"></script>
 
-<script type="text/javascript" src="{{ asset ('/common/socialshare.js')}}"></script>
+<script type="text/javascript"
+	src="{{ asset ('/common/socialshare.js')}}"></script>
 
 <!-- datepicker -->
-<script  type="text/javascript" src="{{ asset ('/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+<script type="text/javascript"
+	src="{{ asset ('/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="{{asset ('plugins/daterangepicker/daterangepicker.js')}}"></script>
 
-	
-<script src='{{ asset ("/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js") }}'></script>
+
+<script
+	src='{{ asset ("/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js") }}'></script>
 
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
       user experience. Slimscroll is required when using the
       fixed layout. -->
-      
+
 <!-- Tag Editor JavaScript -->
 <script src='{{ asset ("/bower_components/caret/jquery.caret.js") }}'></script>
-<script src='{{ asset ("/bower_components/jquery-tag-editor/jquery.tag-editor.min.js") }}'></script>
+<script
+	src='{{ asset ("/bower_components/jquery-tag-editor/jquery.tag-editor.min.js") }}'></script>
 
 
 <!-- Full Calendar -->
 <script src='{{ asset ("/common/x_full_calendar/fullcalendar.js") }}'></script>
+<!-- JQuery Date format -->
+<script
+	src='{{ asset ("/bower_components/jquery-dateFormat/dist/jquery-dateFormat.min.js") }}'></script>
 
 
 <script type="text/javascript">
@@ -44,7 +52,41 @@ $(document).ready(function() {
 	className: default(transparent), important(red), chill(pink), success(green), info(blue)
 	
 	*/
-	
+	function updateInterviewSchedule(event, revertFunc) {
+	   var id = event.id;
+  	   var start = event.start;
+	   var end   = (event.end == null) ? start : event.end;
+
+	   var longDateFormat  = 'yyyy-MM-dd HH:mm:ss';	   	   
+	   start = jQuery.format.date(start, longDateFormat);
+	   end = jQuery.format.date(end, longDateFormat);
+	   	   
+  	   $url = $('input[name="recruitments.interviews"]').val();
+		   $interview_id = id;
+	       $url   = $url+"/"+$interview_id;
+	       var token = $('input[name="_token"]').val();
+	       
+	   	   $.ajax({
+     	     url: $url,
+     	     data: {'_method' :'PUT', 'start':start,'end':end, '_token' : token},
+     	     type: 'POST',
+     	     dataType: 'json',
+     	     success: function(response){
+         	   	console.log(response);
+     	       if(response.success != true)
+     	       {
+         	       revertFunc();        	       
+         	       return false;
+     	       }
+     	       else
+         	       return true;
+     	     },
+     	     error: function(e){
+     	       revertFunc();
+       	       return false;
+     	     }
+     	});
+	}
 	  
 	/* initialize the external events
 	-----------------------------------------------------------------*/
@@ -99,7 +141,8 @@ $(document).ready(function() {
 		allDaySlot: false,
 		selectHelper: true,
 		select: function(start, end, allDay) {
-			var title = prompt('Event Title:');
+			//$("#dlg_add_candidate_interviews").modal("show");
+			/*var title = prompt('Event Title:');			
 			if (title) {
 				calendar.fullCalendar('renderEvent',
 					{
@@ -111,6 +154,7 @@ $(document).ready(function() {
 					true // make the event "stick"
 				);
 			}
+			*/
 			calendar.fullCalendar('unselect');
 		},
 		droppable: true, // this allows things to be dropped onto the calendar !!!
@@ -137,6 +181,16 @@ $(document).ready(function() {
 			}
 			
 		},
+		eventClick:  function(event, jsEvent, view) {
+            $('input[name="interview_id"]').val(event.id);	
+			$("#dlg_show_candidate_interviews").modal("show");
+        },
+        eventResize: function(event, delta, revertFunc) {
+      	   	updateInterviewSchedule(event,revertFunc);
+        },
+        eventDrop: function(event, delta, revertFunc) {
+        	updateInterviewSchedule(event,revertFunc);
+        },
 		events: {
 			url : '/~ThanhPT/GlobalHRM/public/recruitments/schedules',
 			type: 'GET',
@@ -157,7 +211,7 @@ $(document).ready(function() {
 
 <!-- Candidate's skills tagging -->
 
-		
+
 <script type="text/javascript">
 	// jQuery UI autocomplete extension - suggest labels may contain HTML tags
 	// github.com/scottgonzalez/jquery-ui-extensions/blob/master/src/autocomplete/jquery.ui.autocomplete.html.js

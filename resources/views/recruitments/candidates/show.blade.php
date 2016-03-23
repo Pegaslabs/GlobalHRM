@@ -73,8 +73,9 @@
 						<button class="btn btn-small btn-danger"
 							 data-toggle="modal" data-target="#dlg_add_candidate_interviews" 
 							 data-title="{{trans('labels.recruitments.candidate_interviews.messages.dlg_add_candidate_interview_title') }}"
-							 data-url  ="{{route('recruitments.candidates.involve', ['candidate_id' => $candidate->id])}}"
-							 data-redirect = "{{route('recruitments.candidates.show', ['candidate_id' => $candidate->id])}}"							 
+							 data-applied_job_url  ="{{route('recruitments.candidates.involve', ['candidate_id' => $candidate->id])}}"
+							 data-redirect = "{{route('recruitments.candidates.show', ['candidate_id' => $candidate->id])}}"
+							 data-mode = "new"			 
 						>
 							<i class="fa fa-bell"></i>  {{trans('labels.recruitments.candidates.button_label_interview_schedule') }}
 						</button>	
@@ -170,7 +171,15 @@
 								<button id="btnEditInterview"
 									type="button"
 									style="position: absolute; bottom: 5px; right: 35px; font-size: 13px;"
-									tooltip="Edit">
+									tooltip="Edit"
+								 	data-toggle="modal" data-target="#dlg_add_candidate_interviews" 
+							 		data-title="{{trans('labels.recruitments.candidate_interviews.messages.dlg_edit_candidate_interview_title') }}"
+							 		data-applied_job_url  ="{{route('recruitments.candidates.involve', ['candidate_id' => $candidate->id])}}"
+							 		data-interview_detail_url  ="{{URL::to('recruitments/interviews/')}}"							 		
+							 		data-redirect = "{{route('recruitments.candidates.show', ['candidate_id' => $candidate->id])}}"
+							 		data-mode = "edit"
+							 		data-id   = "{{$scheduledInterview->id}}"
+								>
 									<li class="fa fa-edit"></li>
 								</button>
 								</h5>
