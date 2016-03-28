@@ -16,15 +16,15 @@
 <!-- datepicker -->
 <script type="text/javascript"
 	src="{{ asset ('/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-
-
+<!-- Date range Picker -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="{{asset ('plugins/daterangepicker/daterangepicker.js')}}"></script>
+<script src='{{asset ("/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js") }}'></script>
 
 
-<script
-	src='{{ asset ("/bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js") }}'></script>
-
+<!-- DataTables -->
+<script src="{{asset ('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{asset ('plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
@@ -35,7 +35,6 @@
 <script src='{{ asset ("/bower_components/caret/jquery.caret.js") }}'></script>
 <script
 	src='{{ asset ("/bower_components/jquery-tag-editor/jquery.tag-editor.min.js") }}'></script>
-
 
 <!-- Full Calendar -->
 <script src='{{ asset ("/common/x_full_calendar/fullcalendar.js") }}'></script>

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Recruitments;
 
 use App\Http\Controllers\Controller;
-use View, DB, Validator, Input,Redirect, Response;
+
+use View, DB, Validator,Redirect, Response;
 
 use App\Models\Recruitments\Job;
 use App\Models\Recruitments\JobTitle;
@@ -16,6 +17,10 @@ use App\Models\Recruitments\EducationLevel;
 use App\Models\Organization\Department;
 use App\Models\Organization\Country;
 
+use Input;
+use Illuminate\Http\Request;
+
+
 class JobController extends Controller
 {
 /**
@@ -24,6 +29,7 @@ class JobController extends Controller
 	 * @return Response
 	 */
 	public function index() {
+		/*
 		$jobs = DB::table('tblJobs')
 					->leftjoin('tblJobStatus','tblJobs.status_id', '=', 'tblJobStatus.id')
 					->leftjoin('tblJobTitles','tblJobs.title_id', '=', 'tblJobTitles.id')
@@ -38,9 +44,8 @@ class JobController extends Controller
 							)
 					->orderBy('closing_date','DESC')
 					->paginate(3);		
-					
-		return View::make ( 'recruitments.jobs.index' )
-			   ->with ( 'jobs', $jobs );
+		*/			
+		return View::make ( 'recruitments.jobs.index' );
 	}
 	
 	/**
@@ -303,9 +308,120 @@ class JobController extends Controller
 											tblCandidate_Jobs.candidate_id=:candidate_id)", [ 'candidate_id' => $candidate_id ]);
 		if(!is_null($availableJobs))
 			$res = response()->json(['success'=>true,'data'=>json_encode($availableJobs)]);
-			else
-				$res = response()->json(['success'=>false, 'data' => 'There is no available job for selection']);
-				return $res ;
+		else
+			$res = response()->json(['success'=>false, 'data' => 'There is no available job for selection']);
+		return $res ;
+	}
+	
+	public function getJobsInfo(Request $request){		
+		/*
+		 * Paging
+		 */
+		$limit =  0;
+		$skip  =  0;
+		if ( $request->has('start')  &&  $request->has('length') )
+		{
+			$limit = intval($request->input('length'));
+			$skip  = intval($request->input('start'));
+		}
+		
+		/*
+		 * Order By
+		 */
+		
+		$sortColumns=array(
+				0=>'tblJobs.id',
+				1=>'tblJobTitles.name',
+				2=>'tblJobs.no_pos',
+				3=>'tblJobs.description',
+				4=>'tblDepartments.name',
+				5=>'tblJobs.priority',
+				6=>'tblEmploymentTypes.name',
+				7=>'tblEmploymentLevels.name',
+				8=>'tblJobStatus.status_name',
+				9=>'tblJobs.closing_date',
+		);
+		$orderBy="closing_date";
+		$direction="desc";
+		if($request->has('order'))
+		{
+			$column = $request->input('order.0.column');
+			$direction  = $request->input('order.0.dir');
+			$orderBy = $sortColumns[intval($column)];
+		}
+		/*
+		 * Count the records Total & set the initial value for recordsFiltered
+		 */
+		$recordTotals = $jobs = DB::table('tblJobs')->count();
+		$recordsFiltered = 	$recordTotals;
+		
+		$jobs = null;
+		if($request->has('search.value')){
+			$keyword = trim($request->input('search.value'));
+			if($keyword != ""){
+				$jobs = DB::table('tblJobs')
+		                ->where('tblJobTitles.name', 'LIKE', '%'.$keyword.'%')
+		                ->orWhere('tblJobs.description', 'LIKE', '%'.$keyword.'%')
+		                ->orWhere('tblDepartments.name', 'LIKE', '%'.$keyword.'%')
+		                ->orWhere('tblEmploymentTypes.name', 'LIKE', '%'.$keyword.'%')
+		                ->orWhere('tblEmploymentLevels.name', 'LIKE', '%'.$keyword.'%')
+		                ->orWhere('tblSkills.name', 'LIKE','%'.$keyword.'%')
+						->leftjoin('tblJobStatus','tblJobs.status_id', '=', 'tblJobStatus.id')
+						->leftjoin('tblJobTitles','tblJobs.title_id','=','tblJobTitles.id')
+						->leftjoin('tblDepartments','tblJobs.department_id','=','tblDepartments.id')
+						->leftjoin('tblEmploymentTypes','tblJobs.employment_type_id', '=', 'tblEmploymentTypes.id')
+						->leftjoin('tblEmploymentLevels','tblJobs.experience_level_id', '=', 'tblEmploymentLevels.id')
+						->leftjoin('tblSkills', 'tblJobs.job_function_id', '=','tblSkills.id')
+						->select('tblJobs.*',
+								'tblJobStatus.status_name',
+								'tblJobStatus.description AS display',
+								'tblJobTitles.name AS title_name',
+								'tblDepartments.name AS department_name',
+								'tblEmploymentTypes.name AS emp_type_name',
+								'tblEmploymentLevels.name AS emp_level_name'
+								)
+						->skip($skip)
+						->take($limit)
+						->orderBy($orderBy,$direction)
+						->get();
+					$recordsFiltered= count($jobs);
+			}
+		}else{
+			$jobs = DB::table('tblJobs')
+					->leftjoin('tblJobStatus','tblJobs.status_id', '=', 'tblJobStatus.id')
+					->leftjoin('tblJobTitles','tblJobs.title_id','=','tblJobTitles.id')
+					->leftjoin('tblDepartments','tblJobs.department_id','=','tblDepartments.id')
+					->leftjoin('tblEmploymentTypes','tblJobs.employment_type_id', '=', 'tblEmploymentTypes.id')
+					->leftjoin('tblEmploymentLevels','tblJobs.experience_level_id', '=', 'tblEmploymentLevels.id')
+					->select('tblJobs.*',
+							'tblJobStatus.status_name',
+							'tblJobStatus.description AS display',
+							'tblJobTitles.name AS title_name',
+							'tblDepartments.name AS department_name',
+							'tblEmploymentTypes.name AS emp_type_name',
+							'tblEmploymentLevels.name AS emp_level_name'
+							)
+					->skip($skip)
+					->take($limit)
+					->orderBy($orderBy,$direction)
+					->get();
+		}
+		
+		$ret = array("draw"=> Input::get('draw'),"recordsTotal"=>$recordTotals, "recordsFiltered"=> $recordsFiltered,'data'=>array());
+		foreach($jobs as $job){
+			$jobInfo = array($job->id, 
+							 $job->title_name, 
+							 $job->no_pos, 
+					         $job->description, 
+					         $job->department_name, 
+					         $job->priority, 
+					         $job->emp_type_name, 
+					         $job->emp_level_name, 
+					         '<td><span class="badge bg-'.$job->display.'">'.$job->status_name.'</span></td>', 
+							 $job->closing_date);
+			array_push($ret['data'], $jobInfo);								
+		}
+		return json_encode($ret);
 	}
 	
 }

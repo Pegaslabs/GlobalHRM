@@ -29,10 +29,11 @@ Route::get('/', function () {
 Route::group(['middleware' => ['web']], function () {
     Route::group(['prefix' => 'recruitments', 'namespace' => 'Recruitments', 'middleware' => ['auth']], function() {
    		Route::resource('jobs', 'JobController');
+   		Route::post('/search/jobs/', [
+   				'as' =>'recruitments.search.jobs', 'uses'=>'JobController@getJobsInfo']);
+   		   		
    		Route::resource('candidates', 'CandidateController'); 
-   		Route::resource('interviews', 'InterviewController');
-   		
-   		
+   		Route::resource('interviews', 'InterviewController');    		
     });
    /*
     * Tools
