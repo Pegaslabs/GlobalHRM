@@ -30,6 +30,7 @@ trans('labels.recruitments.jobs.content_title') }}
 							trans('labels.recruitments.jobs.columns.experience_level_id') }}</th>
 						<th>{{ trans('labels.recruitments.jobs.columns.status_id') }}</th>
 						<th>{{ trans('labels.recruitments.jobs.columns.closing_date') }}</th>
+						<th>{{ trans('labels.recruitments.jobs.columns.actions') }}</th>
 					</tr>
 				</thead>
 			</table>			
@@ -65,7 +66,10 @@ $(document).ready(function() {
 			error: function(){  
 				console.log('Error while retrieving data from server. Please check your server and try again.');
 			}
-		 }
+		 },
+		 "aoColumnDefs": [
+		      { 'bSortable': false, 'aTargets': [ 1,3,6,7,8,10 ] }
+		 ]
 	});
 });
 </script>

@@ -28,23 +28,7 @@ class JobController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function index() {
-		/*
-		$jobs = DB::table('tblJobs')
-					->leftjoin('tblJobStatus','tblJobs.status_id', '=', 'tblJobStatus.id')
-					->leftjoin('tblJobTitles','tblJobs.title_id', '=', 'tblJobTitles.id')
-					->leftjoin('tblDepartments','tblJobs.department_id', '=', 'tblDepartments.id')	
-					->leftjoin('tblEmploymentTypes','tblJobs.employment_type_id', '=', 'tblEmploymentTypes.id')
-					->leftjoin('tblEmploymentLevels','tblJobs.experience_level_id', '=', 'tblEmploymentLevels.id')						
-					->select('tblJobs.*', 'tblJobStatus.status_name', 'tblJobStatus.description AS display',
-							 'tblJobTitles.name AS title_name', 
-							 'tblDepartments.name AS department_name',
-							 'tblEmploymentTypes.name AS emp_type_name',
-							 'tblEmploymentLevels.name AS emp_level_name'
-							)
-					->orderBy('closing_date','DESC')
-					->paginate(3);		
-		*/			
+	public function index() {			
 		return View::make ( 'recruitments.jobs.index' );
 	}
 	
@@ -340,6 +324,7 @@ class JobController extends Controller
 				7=>'tblEmploymentLevels.name',
 				8=>'tblJobStatus.status_name',
 				9=>'tblJobs.closing_date',
+				10=>''
 		);
 		$orderBy="closing_date";
 		$direction="desc";
@@ -361,10 +346,7 @@ class JobController extends Controller
 			if($keyword != ""){
 				$jobs = DB::table('tblJobs')
 		                ->where('tblJobTitles.name', 'LIKE', '%'.$keyword.'%')
-		                ->orWhere('tblJobs.description', 'LIKE', '%'.$keyword.'%')
 		                ->orWhere('tblDepartments.name', 'LIKE', '%'.$keyword.'%')
-		                ->orWhere('tblEmploymentTypes.name', 'LIKE', '%'.$keyword.'%')
-		                ->orWhere('tblEmploymentLevels.name', 'LIKE', '%'.$keyword.'%')
 		                ->orWhere('tblSkills.name', 'LIKE','%'.$keyword.'%')
 						->leftjoin('tblJobStatus','tblJobs.status_id', '=', 'tblJobStatus.id')
 						->leftjoin('tblJobTitles','tblJobs.title_id','=','tblJobTitles.id')
@@ -418,7 +400,9 @@ class JobController extends Controller
 					         $job->emp_type_name, 
 					         $job->emp_level_name, 
 					         '<td><span class="badge bg-'.$job->display.'">'.$job->status_name.'</span></td>', 
-							 $job->closing_date);
+							 $job->closing_date,
+							 '<a  class="btn btn-block btn-info" href="'.route('recruitments.jobs.show' , ['jobs'=> $job->id]) .'">Details</a>'
+			);
 			array_push($ret['data'], $jobInfo);								
 		}
 		return json_encode($ret);
