@@ -29,11 +29,36 @@ Route::get('/', function () {
 Route::group(['middleware' => ['web']], function () {
     Route::group(['prefix' => 'recruitments', 'namespace' => 'Recruitments', 'middleware' => ['auth']], function() {
    		Route::resource('jobs', 'JobController');
+   		
    		Route::post('/search/jobs/', [
    				'as' =>'recruitments.search.jobs', 'uses'=>'JobController@getJobsInfo']);
    		   		
    		Route::resource('candidates', 'CandidateController'); 
-   		Route::resource('interviews', 'InterviewController');    		
+   		
+   		Route::resource('interviews', 'InterviewController');   
+   		
+   		//Route::resource('resumes', 'ResumeController');
+   		
+   		Route::get('resumes', [
+   			'as'=> 'recruitments.resumes.index',
+   			'uses'=>'ResumeController@index'
+   		]);
+   		Route::get('resumes/{resumes}', [
+   				'as'=> 'recruitments.resumes.show',
+   				'uses'=>'ResumeController@show'
+   		]);
+   		Route::get('resumes/{resumes}/download', [
+   				'as'=> 'recruitments.resumes.download',
+   				'uses'=>'ResumeController@download'
+   		]);
+   		Route::delete('resumes/{resumes}',[
+   				'as' =>'recruitments.resumes.destroy',
+   				'uses'=>'ResumeController@destroy'
+   				
+   		]);
+   		Route::post('/search/resumes/',[
+   				'as' =>'recruitments.search.resumes', 'uses'=>'ResumeController@getResumesInfo'
+   		]);
     });
    /*
     * Tools

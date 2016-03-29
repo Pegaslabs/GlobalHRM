@@ -1,3 +1,4 @@
+<script src="{{ asset('/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#confirmDelete').on('show.bs.modal', function (e) {
@@ -8,6 +9,11 @@ $(document).ready(function(){
 
 	      // Pass form reference to modal for submission on yes/ok
 	      var form = $(e.relatedTarget).closest('form');
+	      $url = $(e.relatedTarget).attr('data-url');
+	      if ($url !== undefined){
+	    	  form.attr('action', $url);
+	    	  alert(form.attr('action'));
+		  }
 	      $(this).find('.modal-footer #confirm').data('form', form);
 	});
 	<!-- Form confirm (yes/ok) handler, submits form -->

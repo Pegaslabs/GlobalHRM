@@ -337,7 +337,7 @@ class JobController extends Controller
 		/*
 		 * Count the records Total & set the initial value for recordsFiltered
 		 */
-		$recordTotals = $jobs = DB::table('tblJobs')->count();
+		$recordTotals = DB::table('tblJobs')->count();
 		$recordsFiltered = 	$recordTotals;
 		
 		$jobs = null;

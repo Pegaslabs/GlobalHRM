@@ -53,6 +53,7 @@ return [
 						]
 				] ,
 				'candidates' =>[
+						'page_title'      => 'Candidate Management Page',
 						'content_title'   => 'Candidate Managment',
 						'content_title_description_list'   => 'Manage Candidate Database',
 						'content_title_description_show'   => 'Candidate Detail Information',
@@ -141,6 +142,23 @@ return [
 								'job_id'       => 'Job Title',
 								'notes'         => 'Notes'
 						]
+				],
+				'resumes' =>[
+						'content_title'   => 'Resumes Managment',
+						'content_title_description_list' => 'Manage All Uploaded Resumes',
+						'columns'=>[
+								'id' => 'No.',
+								'candidate_id' => 'Candidate Name',
+								'email' => 'Email',
+								'job_function_id' => 'Job Function',
+								'mime'=>'MIME',
+								'actions' => 'Actions' 
+						],
+						'messages'=>[
+								'dlg_delete_confirm_title' => 'Delete Resume Confirm',
+								'dlg_delete_confirm_msg' => 'Are you sure you want to delete this resume ?',
+						]
+						
 				]
 				
 		] 

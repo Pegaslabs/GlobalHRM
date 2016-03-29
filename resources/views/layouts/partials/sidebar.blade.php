@@ -62,7 +62,8 @@
                     		<i class='fa fa-calendar'></i>{{ trans('labels.sidebar.recruitments.sub_menu.interviews')}}
                     	</a>
                     </li>
-                    <li><a href="#"><i class='fa fa-file'></i>{{ trans('labels.sidebar.recruitments.sub_menu.resumes')}}</a></li>
+                    <li class="{{ active_class(if_uri_pattern(['recruitments/resumes*']), 'active') }}">
+                    	<a href="{{route('recruitments.resumes.index')}}"><i class='fa fa-file'></i>{{ trans('labels.sidebar.recruitments.sub_menu.resumes')}}</a></li>
                     <li><a href="#"><i class='fa fa-gears'></i>{{ trans('labels.sidebar.recruitments.sub_menu.settings')}}</a></li>
                     
                 </ul>

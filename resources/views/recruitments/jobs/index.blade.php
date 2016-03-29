@@ -1,10 +1,16 @@
-@extends ('layouts.app') @section ('title',
-trans('labels.recruitments.jobs.page_title'))
-@section('contentheader_title') {{
-trans('labels.recruitments.jobs.content_title') }}
-<small> @endsection @section('contentheader_description') {{
-	trans('labels.recruitments.jobs.content_title_description_list') }}</small>
-@endsection @section('main-content')
+@extends ('layouts.app') 
+@section ('title', trans('labels.recruitments.jobs.content_title'))
+@section('contentheader_title') 
+{{
+	trans('labels.recruitments.jobs.content_title') 
+}}
+<small> 
+@endsection 
+@section('contentheader_description') 
+{{ trans('labels.recruitments.jobs.content_title_description_list') }}
+</small>
+@endsection 
+@section('main-content')
 <div class="box box-success">
 	<div class="box-header with-border">
 		<h3 class="box-title">{{
