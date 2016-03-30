@@ -42,6 +42,9 @@
 <script
 	src='{{ asset ("/bower_components/jquery-dateFormat/dist/jquery-dateFormat.min.js") }}'></script>
 
+<!-- chartjs -->
+<script src='{{asset("plugins/chartjs/Chart.min.js")}}'></script>
+
 
 <script type="text/javascript">
 $(document).ready(function() {

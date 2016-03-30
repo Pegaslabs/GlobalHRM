@@ -110,17 +110,7 @@
 						<strong><i class="fa fa-pencil margin-r-5"></i> {{ trans('labels.recruitments.candidates.columns.skill_id') }}</strong>
 						<p>
 							@foreach($skillList as $candidateSkill)
-								@if ($candidateSkill->getSkill->category==1)
-									<span class="label label-danger" data-toggle="tooltip" title="{!!$candidateSkill->no_years!!} years">{!!$candidateSkill->getSkill->name!!}</span> 
-								@elseif ($candidateSkill->getSkill->category==2)
-									<span class="label label-success" data-toggle="tooltip" title="{!!$candidateSkill->no_years!!} years">{!!$candidateSkill->getSkill->name!!}</span> 
-								@elseif ($candidateSkill->getSkill->category==3)
-									<span class="label label-info" data-toggle="tooltip" title="{!!$candidateSkill->no_years!!} years">{!!$candidateSkill->getSkill->name!!}</span> 
-								@elseif ($candidateSkill->getSkill->category==4)
-									<span class="label label-warning" data-toggle="tooltip" title="{!!$candidateSkill->no_years!!} years">{!!$candidateSkill->getSkill->name!!}</span> 
-								@else
-									<span class="label label-primary">{!!$candidateSkill->getSkill->skill_name!!}</span>
-								@endif
+								<span class="badge bg-{{$candidateSkill->getSkill->description}}" data-toggle="tooltip" title="{!!$candidateSkill->no_years!!} years">{!!$candidateSkill->getSkill->name!!}</span> 
 							@endforeach
 						</p>
 						<hr>

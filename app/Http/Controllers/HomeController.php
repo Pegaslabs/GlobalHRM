@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use DB, View;
 
 /**
  * Class HomeController
@@ -33,6 +34,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+    	/*
+    	 * 
+    	 */
+    	$jobsByFunction = DB::table('tblJobs')
+    					->join('tblSkills', 'tblJobs.job_function_id','=','tblSkills.id')
+    					->leftjoin('tblJobTitles', 'tblJobs.title_id','=','tblJobTitles.id')
+    					->groupBy('tblJobs.job_function_id')
+    					->select(DB::raw('COUNT(tblJobs.id) AS jobCnt, tblSkills.*, tblJobTitles.name AS titleName'))
+    					->get();
+    				
+        return View::make('home')->with('jobsByFunction',$jobsByFunction);
+        		
     }
 }

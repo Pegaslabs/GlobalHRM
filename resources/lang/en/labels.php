@@ -20,6 +20,11 @@ return [
 					]
 				]
 		],
+		'dashboard'=>[
+				'content_title'   => 'Dashboard',
+				'content_title_description' =>'Keep your information up-to-date',
+				'caption_job_request_report'=>'Job Request Report',
+		],
 		'recruitments' => [ 
 				'jobs' => [ 
 						'content_title'   => 'Job Managment',

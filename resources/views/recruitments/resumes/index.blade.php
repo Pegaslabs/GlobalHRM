@@ -11,7 +11,8 @@
 	trans('labels.recruitments.resumes.content_title_description_list') 
 }}
 </small>
-@endsection @section('main-content')
+@endsection 
+@section('main-content')
 {!! Form::open(array('url' =>'', 'accept-charset'=>'UTF-8', 'name' =>'Frm_Delete_Interview', 'class'=>'form-horizontal','style'=>'display:inline')) !!} 
 {!! Form::hidden('_method', 'DELETE')!!}		
 <div class="box box-success">
